@@ -1,0 +1,206 @@
+student_id,name,major,city,year,gpa,credits,email
+20230121,Hamza Odeh,Data Science,Aqaba,2,2.99,110,hamza.odeh120@std.uop.edu.jo
+20230023,Sami Nasser,Software Eng,Aqaba,1,2.41,34,sami.nasser022@std.uop.edu.jo
+20230006,Omar Zaid,Computer Science,Salt,2,3.4,43,omar.zaid005@std.uop.edu.jo
+20230052,Lina Jaber,AI,Irbid,2,2.84,27,lina.jaber051@std.uop.edu.jo
+20230082,Ahmad Hamdan,Computer Science,Irbid,4,3.37,61,ahmad.hamdan081@std.uop.edu.jo
+20230197,Lina Mansour,Software Eng,Amman,3,3.35,24,lina.mansour196@std.uop.edu.jo
+20230013,Nadia Hamdan,AI,Madaba,2,2.75,43,nadia.hamdan012@std.uop.edu.jo
+20230193,Maya Odeh,Cybersecurity,Irbid,4,3.09,31,maya.odeh192@std.uop.edu.jo
+20230093,Yousef Zaid,Software Eng,Salt,3,2.57,68,yousef.zaid092@std.uop.edu.jo
+20230179,Khaled Saleh,Software Eng,Salt,4,3.35,102,khaled.saleh178@std.uop.edu.jo
+20230085,Tariq Barakat,Cybersecurity,Salt,2,unknown,71,tariq.barakat084@std.uop.edu.jo
+20230165,Yousef Odeh,Computer Science,Amman,3,3.17,100,yousef.odeh164@std.uop.edu.jo
+20230019,Bilal Barakat,Software Eng,Salt,1,3.8,90,bilal.barakat018@std.uop.edu.jo
+20230104,Yousef Mansour,Cybersecurity,Madaba,1,2.95,21,yousef.mansour103@std.uop.edu.jo
+20230071,Noor Zaid,Software Eng,Madaba,4,2.68,93,noor.zaid070@std.uop.edu.jo
+20230084,Ahmad Khalil,AI,Zarqa,1,1.89,128,ahmad.khalil083@std.uop.edu.jo
+20230099,Sara Haddad,Computer Science,Madaba,3,1.5,91,sara.haddad098@std.uop.edu.jo
+20230087,Noor Jaber,Computer Science,Salt,1,3.33,33,noor.jaber086@std.uop.edu.jo
+20230035,Ahmad Odeh,Software Eng,Aqaba,4,3.44,29,ahmad.odeh034@std.uop.edu.jo
+20230162,Sara Barakat,Software Eng,Aqaba,3,2.1,71,sara.barakat161@std.uop.edu.jo
+20230183,Tariq Jaber,Data Science,Madaba,1,2.78,115,tariq.jaber182@std.uop.edu.jo
+20230002,Hamza Khalil,Computer Science,Madaba,4,2.57,69,hamza.khalil001@std.uop.edu.jo
+20230058,Yousef Zaid,Software Eng,Amman,2,1.97,44,yousef.zaid057@std.uop.edu.jo
+20230181,Sami Qasem,Data Science,Irbid,3,2.27,40,sami.qasem180@std.uop.edu.jo
+20230036,Sara Khalil,Software Eng,Irbid,3,3.5,122,sara.khalil035@std.uop.edu.jo
+20230032,Maya Haddad,Software Eng,Zarqa,2,2.93,61,maya.haddad031@std.uop.edu.jo
+20230126,Tariq Hamdan,Cybersecurity,Salt,4,2.84,90,tariq.hamdan125@std.uop.edu.jo
+20230097,Sami Haddad,AI,Aqaba,2,2.61,96,sami.haddad096@std.uop.edu.jo
+20230073,Hala Barakat,AI,Madaba,3,3.75,81,hala.barakat072@std.uop.edu.jo
+20230172,Hamza Khalil,Computer Science,Irbid,1,2.54,38,hamza.khalil171@std.uop.edu.jo
+20230075,Maya Jaber,Computer Science,Salt,2,,55,maya.jaber074@std.uop.edu.jo
+20230022,Maya Jaber,AI,Irbid,2,3.27,114,maya.jaber021@std.uop.edu.jo
+20230057,Lina Nasser,Cybersecurity,Zarqa,3,2.84,52,lina.nasser056@std.uop.edu.jo
+20230149,Nadia Khalil,Software Eng,Amman,1,1.98,83,nadia.khalil148@std.uop.edu.jo
+20230134,Tariq Zaid,Cybersecurity,Amman,3,2.95,69,tariq.zaid133@std.uop.edu.jo
+20230094,Layla Zaid,AI,Madaba,2,2.71,132,layla.zaid093@std.uop.edu.jo
+20230026,Reem Khalil,Software Eng,Aqaba,1,2.76,113,reem.khalil025@std.uop.edu.jo
+20230091,Noor Awad,Cybersecurity,Irbid,2,1.73,72,noor.awad090@std.uop.edu.jo
+20230063,Reem Nasser,AI,Amman,2,2.87,75,reem.nasser062@std.uop.edu.jo
+20230015,Lina Odeh,Computer Science,Irbid,3,2.66,126,lina.odeh014@std.uop.edu.jo
+20230092,Zain Khalil,Software Eng,Irbid,3,2.86,19,zain.khalil091@std.uop.edu.jo
+20230021,Reem Hamdan,Cybersecurity,Zarqa,4,3.15,27,reem.hamdan020@std.uop.edu.jo
+20230143,Yousef Nasser,AI,Zarqa,4,2.86,26,yousef.nasser142@std.uop.edu.jo
+20230138,Dana Khalil,Data Science,Zarqa,3,2.53,77,dana.khalil137@std.uop.edu.jo
+20230191,Omar Zaid,Cybersecurity,Salt,1,3.31,116,omar.zaid190@std.uop.edu.jo
+20230003,Yousef Barakat,Data Science,Madaba,1,3.21,112,yousef.barakat002@std.uop.edu.jo
+20230048,Bilal Zaid,Computer Science,Amman,4,3.29,102,bilal.zaid047@std.uop.edu.jo
+20230196,Khaled Odeh,Data Science,Aqaba,4,3.14,43,khaled.odeh195@std.uop.edu.jo
+20230027,Layla Jaber,Software Eng,Amman,2,2.86,102,layla.jaber026@std.uop.edu.jo
+20230164,Dana Barakat,Data Science,Aqaba,4,,89,dana.barakat163@std.uop.edu.jo
+20230109,Layla Odeh,Computer Science,Irbid,4,2.82,54,layla.odeh108@std.uop.edu.jo
+20230145,Maya Jaber,Software Eng,Aqaba,4,2.66,59,maya.jaber144@std.uop.edu.jo
+20230055,Maya Qasem,Software Eng,Madaba,3,2.06,86,maya.qasem054@std.uop.edu.jo
+20230096,Noor Hamdan,Data Science,Irbid,4,3.7,44,noor.hamdan095@std.uop.edu.jo
+20230147,Reem Zaid,AI,Madaba,4,2.72,36,reem.zaid146@std.uop.edu.jo
+20230046,Faris Hamdan,AI,Amman,2,1.75,57,faris.hamdan045@std.uop.edu.jo
+20230030,Tariq Zaid,Data Science,Amman,1,1.92,79,tariq.zaid029@std.uop.edu.jo
+20230018,Lina Saleh, Computer Science ,Irbid,1,2.5,72,lina.saleh017@std.uop.edu.jo
+20230072,Tariq Odeh,AI,Irbid,4,2.79,122,tariq.odeh071@std.uop.edu.jo
+20230008,Reem Awad,Cybersecurity,Aqaba,3,2.66,46,reem.awad007@std.uop.edu.jo
+20230113,Tariq Zaid,Computer Science,Amman,1,3.06,73,tariq.zaid112@std.uop.edu.jo
+20230115,Yousef Khalil,Data Science,Irbid,4,3.02,67,yousef.khalil114@std.uop.edu.jo
+20230051,Yousef Qasem,AI,Salt,2,2.65,48,yousef.qasem050@std.uop.edu.jo
+20230200,Sara Nasser,Software Eng,Zarqa,3,2.86,92,sara.nasser199@std.uop.edu.jo
+20230077,Maya Zaid,AI,Madaba,1,3.09,78,maya.zaid076@std.uop.edu.jo
+20230111,Sara Haddad,Data Science,Zarqa,4,2.33,115,sara.haddad110@std.uop.edu.jo
+20230112,Reem Awad,Computer Science,Zarqa,1,3.51,119,reem.awad111@std.uop.edu.jo
+20230066,Dana Haddad,Cybersecurity,Madaba,2,3.4,44,dana.haddad065@std.uop.edu.jo
+20230164,Dana Barakat,Data Science,Aqaba,4,,89,dana.barakat163@std.uop.edu.jo
+20230090,Reem Zaid,Cybersecurity,Amman,1,3.26,47,reem.zaid089@std.uop.edu.jo
+20230048,Bilal Zaid,Computer Science,Amman,4,3.29,102,bilal.zaid047@std.uop.edu.jo
+20230102,Lina Zaid,AI,Salt,1,2.93,31,lina.zaid101@std.uop.edu.jo
+20230064,Nadia Zaid,Computer Science,Salt,1,2.99,130,nadia.zaid063@std.uop.edu.jo
+20230188,Hala Qasem,Software Eng,Zarqa,1,2.84,113,hala.qasem187@std.uop.edu.jo
+20230176,Khaled Qasem,Computer Science,Salt,4,3.24,70,khaled.qasem175@std.uop.edu.jo
+20230017,Bilal Mansour,Software Eng,Zarqa,1,3.63,54,bilal.mansour016@std.uop.edu.jo
+20230105,Hala Zaid,AI,Irbid,2,2.69,74,hala.zaid104@std.uop.edu.jo
+20230049,Faris Mansour,AI,Salt,2,2.56,68,faris.mansour048@std.uop.edu.jo
+20230131,Rana Jaber,Computer Science,Salt,3,2.99,132,rana.jaber130@std.uop.edu.jo
+20230095,Omar Qasem,Computer Science,Irbid,1,3.9,111,omar.qasem094@std.uop.edu.jo
+20230014,Hala Khalil, Computer Science ,Amman,2,2.23,103,hala.khalil013@std.uop.edu.jo
+20230086,Tariq Haddad,AI,Amman,4,2.96,14,tariq.haddad085@std.uop.edu.jo
+20230117,Layla Zaid,Data Science,Madaba,4,3.08,57,layla.zaid116@std.uop.edu.jo
+20230140,Bilal Saleh,AI,Aqaba,3,3.15,68,bilal.saleh139@std.uop.edu.jo
+20230137,Nadia Awad,Computer Science,Madaba,3,2.53,16,nadia.awad136@std.uop.edu.jo
+20230012,Faris Khalil,Cybersecurity,Salt,1,2.08,35,faris.khalil011@std.uop.edu.jo
+20230039,Nadia Mansour,Data Science,Salt,2,2.99,129,nadia.mansour038@std.uop.edu.jo
+20230118,Reem Saleh,Cybersecurity,Aqaba,2,3.15,112,reem.saleh117@std.uop.edu.jo
+20230043,Nadia Mansour,AI,Irbid,1,2.28,82,nadia.mansour042@std.uop.edu.jo
+20230045,Nadia Mansour,Data Science,Madaba,1,2.92,12,nadia.mansour044@std.uop.edu.jo
+20230151,Reem Zaid,AI,Madaba,3,3.14,97,reem.zaid150@std.uop.edu.jo
+20230106,Khaled Mansour,Computer Science,Zarqa,1,3.42,21,khaled.mansour105@std.uop.edu.jo
+20230054,Omar Jaber,AI,Zarqa,1,2.36,95,omar.jaber053@std.uop.edu.jo
+20230005,Tariq Khalil,Data Science,Aqaba,2,3.58,47,tariq.khalil004@std.uop.edu.jo
+20230190,Rana Zaid,AI,Amman,3,2.38,79,rana.zaid189@std.uop.edu.jo
+20230166,Faris Barakat,Computer Science,Aqaba,2,3.07,65,faris.barakat165@std.uop.edu.jo
+20230100,Nadia Zaid,AI,Amman,2,2.55,98,nadia.zaid099@std.uop.edu.jo
+20230127,Faris Barakat,Data Science,Aqaba,2,3.29,75,faris.barakat126@std.uop.edu.jo
+20230169,Sara Awad,Cybersecurity,Amman,4,2.66,35,sara.awad168@std.uop.edu.jo
+20230178,Ahmad Zaid,Cybersecurity,Zarqa,3,3.22,111,ahmad.zaid177@std.uop.edu.jo
+20230088,Faris Awad,Software Eng,Irbid,1,2.43,100,faris.awad087@std.uop.edu.jo
+20230139,Bilal Mansour,Data Science,Madaba,3,2.24,16,bilal.mansour138@std.uop.edu.jo
+20230187,Hamza Haddad,Cybersecurity,Zarqa,2,2.4,54,hamza.haddad186@std.uop.edu.jo
+20230074,Hamza Jaber,Cybersecurity,Irbid,3,2.25,117,hamza.jaber073@std.uop.edu.jo
+20230132,Dana Qasem,Cybersecurity,Madaba,4,3.5,13,dana.qasem131@std.uop.edu.jo
+20230136,Ahmad Hamdan,Software Eng,Irbid,1,2.61,38,ahmad.hamdan135@std.uop.edu.jo
+20230174,Sami Jaber,AI,Irbid,3,2.13,117,sami.jaber173@std.uop.edu.jo
+20230101,Dana Hamdan,Computer Science,Aqaba,1,3.25,78,dana.hamdan100@std.uop.edu.jo
+20230182,Khaled Saleh,AI,Aqaba,2,,45,khaled.saleh181@std.uop.edu.jo
+20230128,Rana Saleh,Data Science,Irbid,3,3.24,105,rana.saleh127@std.uop.edu.jo
+20230098,Khaled Qasem,AI,Salt,3,,22,khaled.qasem097@std.uop.edu.jo
+20230044,Yousef Haddad,AI,Amman,4,2.94,14,yousef.haddad043@std.uop.edu.jo
+20230150,Lina Haddad,Computer Science,Aqaba,3,2.47,117,lina.haddad149@std.uop.edu.jo
+20230034,Lina Zaid,Computer Science,Madaba,2,2.66,34,lina.zaid033@std.uop.edu.jo
+20230076,Khaled Mansour,Cybersecurity,Irbid,1,2.89,125,khaled.mansour075@std.uop.edu.jo
+20230184,Khaled Haddad,Data Science,Aqaba,2,2.28,87,khaled.haddad183@std.uop.edu.jo
+20230107,Rana Barakat,Cybersecurity,Aqaba,1,1.76,53,rana.barakat106@std.uop.edu.jo
+20230081,Khaled Hamdan,Software Eng,Zarqa,4,3.21,132,khaled.hamdan080@std.uop.edu.jo
+20230061,Rana Khalil,Cybersecurity,AMMAN,3,3.79,90,rana.khalil060@std.uop.edu.jo
+20230070,Dana Zaid,AI,Salt,1,,91,dana.zaid069@std.uop.edu.jo
+20230158,Zain Odeh,AI,Madaba,3,3.02,24,zain.odeh157@std.uop.edu.jo
+20230198,Khaled Jaber,Software Eng,Irbid,3,3.2,69,khaled.jaber197@std.uop.edu.jo
+20230080,Hala Odeh, Computer Science ,Irbid,4,3.33,68,hala.odeh079@std.uop.edu.jo
+20230194,Noor Nasser,AI,Irbid,4,2.76,30,noor.nasser193@std.uop.edu.jo
+20230029,Hamza Haddad,AI,Irbid,4,2.51,119,hamza.haddad028@std.uop.edu.jo
+20230065,Ahmad Hamdan,Data Science,Salt,2,2.17,123,ahmad.hamdan064@std.uop.edu.jo
+20230160,Tariq Khalil,Data Science,Aqaba,2,2.74,88,tariq.khalil159@std.uop.edu.jo
+20230052,Lina Jaber,AI,Irbid,2,2.84,27,lina.jaber051@std.uop.edu.jo
+20230129,Layla Barakat,Data Science,Amman,1,3.02,129,layla.barakat128@std.uop.edu.jo
+20230142,Ahmad Khalil,Computer Science,Irbid,2,3.09,84,ahmad.khalil141@std.uop.edu.jo
+20230047,Yousef Mansour,Computer Science,Madaba,2,2.44,44,yousef.mansour046@std.uop.edu.jo
+20230007,Hala Qasem,Data Science,Madaba,1,3.48,20,hala.qasem006@std.uop.edu.jo
+20230179,Khaled Saleh,Software Eng,Salt,4,3.35,102,khaled.saleh178@std.uop.edu.jo
+20230016,Noor Qasem,Cybersecurity,Amman,1,3.53,90,noor.qasem015@std.uop.edu.jo
+20230079,Nadia Mansour,Data Science,Irbid,4,3.25,96,nadia.mansour078@std.uop.edu.jo
+20230157,Layla Awad,Software Eng,Salt,3,3.72,58,layla.awad156@std.uop.edu.jo
+20230011,Bilal Jaber,Computer Science,Salt,2,2.55,40,bilal.jaber010@std.uop.edu.jo
+20230170,Omar Mansour,Computer Science,IRBID,1,2.3,17,omar.mansour169@std.uop.edu.jo
+20230168,Faris Awad,Data Science,Amman,4,3.21,115,faris.awad167@std.uop.edu.jo
+20230060,Khaled Zaid,Software Eng,Zarqa,3,3.64,83,khaled.zaid059@std.uop.edu.jo
+20230056,Yousef Barakat,Software Eng,Madaba,3,2.44,55,yousef.barakat055@std.uop.edu.jo
+20230067,Hala Khalil,Computer Science,Aqaba,1,3.6,120,hala.khalil066@std.uop.edu.jo
+20230041,Noor Saleh,AI,Madaba,3,3.53,98,noor.saleh040@std.uop.edu.jo
+20230148,Maya Odeh,AI,Madaba,2,2.56,128,maya.odeh147@std.uop.edu.jo
+20230108,Bilal Mansour,Data Science,Madaba,2,3.08,66,bilal.mansour107@std.uop.edu.jo
+20230189,Yousef Haddad,Computer Science,Zarqa,4,2.55,85,yousef.haddad188@std.uop.edu.jo
+20230141,Faris Jaber,AI,Irbid,2,3.22,96,faris.jaber140@std.uop.edu.jo
+20230199,Yousef Qasem,Software Eng,Amman,3,2.34,123,yousef.qasem198@std.uop.edu.jo
+20230177,Nadia Haddad,Computer Science,Madaba,1,,62,nadia.haddad176@std.uop.edu.jo
+20230175,Tariq Hamdan,Data Science,Zarqa,3,2.57,109,tariq.hamdan174@std.uop.edu.jo
+20230133,Sara Qasem,Cybersecurity,Amman,3,2.95,100,sara.qasem132@std.uop.edu.jo
+20230010,Lina Khalil,Computer Science,Aqaba,4,3.22,42,lina.khalil009@std.uop.edu.jo
+20230020,Yousef Nasser, Computer Science ,Irbid,3,3.44,35,yousef.nasser019@std.uop.edu.jo
+20230144,Rana Zaid,Cybersecurity,Aqaba,1,3.13,108,rana.zaid143@std.uop.edu.jo
+20230050,Yousef Barakat,Computer Science,Amman,3,2.78,108,yousef.barakat049@std.uop.edu.jo
+20230135,Faris Zaid,AI,Zarqa,2,3.72,73,faris.zaid134@std.uop.edu.jo
+20230042,Reem Nasser,Cybersecurity,Amman,2,2.01,94,reem.nasser041@std.uop.edu.jo
+20230001,Khaled Hamdan,Data Science,Irbid,1,2.89,64,khaled.hamdan000@std.uop.edu.jo
+20230167,Noor Khalil,Computer Science,Zarqa,4,2.98,123,noor.khalil166@std.uop.edu.jo
+20230040,Yousef Barakat,AI,Irbid,1,2.23,12,yousef.barakat039@std.uop.edu.jo
+20230153,Tariq Nasser,Computer Science,Amman,1,3.02,101,tariq.nasser152@std.uop.edu.jo
+20230123,Omar Jaber,Data Science,Aqaba,4,3.07,23,omar.jaber122@std.uop.edu.jo
+20230156,Layla Odeh,Software Eng,Salt,4,3.05,102,layla.odeh155@std.uop.edu.jo
+20230087,Noor Jaber,Computer Science,Salt,1,3.33,33,noor.jaber086@std.uop.edu.jo
+20230155,Ahmad Jaber,Data Science,Zarqa,2,3.75,79,ahmad.jaber154@std.uop.edu.jo
+20230069,Lina Saleh,AI,Amman,1,2.99,67,lina.saleh068@std.uop.edu.jo
+20230146,Sara Mansour,AI,AQABA,3,3.79,53,sara.mansour145@std.uop.edu.jo
+20230119,Hamza Haddad,Data Science,Salt,3,2.73,61,hamza.haddad118@std.uop.edu.jo
+20230173,Dana Hamdan,AI,Zarqa,4,3.17,121,dana.hamdan172@std.uop.edu.jo
+20230078,Tariq Mansour,Computer Science,Salt,3,unknown,64,tariq.mansour077@std.uop.edu.jo
+20230154,Dana Saleh,Software Eng,Irbid,1,3.72,40,dana.saleh153@std.uop.edu.jo
+20230130,Khaled Qasem,Data Science,Madaba,4,2.62,44,khaled.qasem129@std.uop.edu.jo
+20230120,Rana Odeh,AI,Salt,1,2.16,123,rana.odeh119@std.uop.edu.jo
+20230038,Yousef Saleh,Data Science,Madaba,3,3.89,129,yousef.saleh037@std.uop.edu.jo
+20230033,Lina Odeh,Cybersecurity,Zarqa,2,3.44,79,lina.odeh032@std.uop.edu.jo
+20230152,Hamza Awad,Software Eng,Salt,1,3.38,40,hamza.awad151@std.uop.edu.jo
+20230185,Maya Barakat,Cybersecurity,Irbid,1,2.67,91,maya.barakat184@std.uop.edu.jo
+20230031,Hala Hamdan,Cybersecurity,Irbid,2,2.89,52,hala.hamdan030@std.uop.edu.jo
+20230037,Faris Khalil,Computer Science,Irbid,1,2.61,49,faris.khalil036@std.uop.edu.jo
+20230089,Lina Barakat,AI,Amman,3,3.32,14,lina.barakat088@std.uop.edu.jo
+20230192,Hamza Qasem,Data Science,Amman,3,2.54,97,hamza.qasem191@std.uop.edu.jo
+20230024,Faris Qasem,Cybersecurity,Irbid,1,unknown,22,faris.qasem023@std.uop.edu.jo
+20230159,Nadia Barakat,Data Science,Aqaba,2,3.13,92,nadia.barakat158@std.uop.edu.jo
+20230004,Faris Saleh,Computer Science,Aqaba,2,3.42,58,faris.saleh003@std.uop.edu.jo
+20230163,Maya Nasser,AI,Salt,2,3.23,109,maya.nasser162@std.uop.edu.jo
+20230059,Sara Hamdan,Data Science,Aqaba,3,3.5,12,sara.hamdan058@std.uop.edu.jo
+20230171,Lina Qasem,Software Eng,Salt,3,3.0,107,lina.qasem170@std.uop.edu.jo
+20230124,Omar Haddad,Software Eng,Madaba,3,3.87,42,omar.haddad123@std.uop.edu.jo
+20230025,Bilal Saleh,AI,Salt,1,3.38,59,bilal.saleh024@std.uop.edu.jo
+20230186,Ahmad Saleh,AI,Zarqa,4,3.61,63,ahmad.saleh185@std.uop.edu.jo
+20230161,Yousef Haddad,AI,Salt,4,3.28,45,yousef.haddad160@std.uop.edu.jo
+20230009,Hala Awad,AI,Irbid,1,2.56,60,hala.awad008@std.uop.edu.jo
+20230114,Lina Jaber, Computer Science ,Amman,3,2.91,106,lina.jaber113@std.uop.edu.jo
+20230103,Rana Qasem,Software Eng,Amman,2,2.41,46,rana.qasem102@std.uop.edu.jo
+20230028,Omar Haddad,Software Eng,Amman,3,3.17,91,omar.haddad027@std.uop.edu.jo
+20230068,Zain Jaber,Data Science,Amman,1,3.57,27,zain.jaber067@std.uop.edu.jo
+20230083,Layla Hamdan,Data Science,Madaba,4,3.05,37,layla.hamdan082@std.uop.edu.jo
+20230122,Lina Barakat,Cybersecurity,Aqaba,1,1.92,78,lina.barakat121@std.uop.edu.jo
+20230195,Reem Haddad, Computer Science ,Amman,4,2.53,21,reem.haddad194@std.uop.edu.jo
+20230180,Rana Saleh,Software Eng,Madaba,1,2.4,86,rana.saleh179@std.uop.edu.jo
+20230053,Lina Saleh,Data Science,Irbid,2,3.3,49,lina.saleh052@std.uop.edu.jo
+20230062,Reem Haddad,Data Science,Zarqa,4,2.68,61,reem.haddad061@std.uop.edu.jo
+20230116,Nadia Awad,AI,Zarqa,3,3.59,38,nadia.awad115@std.uop.edu.jo
+20230125,Reem Nasser,Computer Science,Madaba,3,2.39,114,reem.nasser124@std.uop.edu.jo
+20230110,Sara Mansour,Cybersecurity,Madaba,3,,115,sara.mansour109@std.uop.edu.jo

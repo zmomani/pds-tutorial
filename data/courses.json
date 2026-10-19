@@ -1,0 +1,27 @@
+[
+  {
+    "code": "606315",
+    "title": "Programming for DS",
+    "credits": 3
+  },
+  {
+    "code": "606272",
+    "title": "Data Structures",
+    "credits": 3
+  },
+  {
+    "code": "606271",
+    "title": "OOP",
+    "credits": 3
+  },
+  {
+    "code": "606410",
+    "title": "Big Data",
+    "credits": 3
+  },
+  {
+    "code": "606320",
+    "title": "Machine Learning",
+    "credits": 3
+  }
+]

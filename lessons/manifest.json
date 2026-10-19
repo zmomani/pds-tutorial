@@ -1,0 +1,146 @@
+[
+ {
+  "id": "01-python-1",
+  "week": "Week 1",
+  "title": "Advanced Python I — Comprehensions, Generators, Lambdas",
+  "blurb": "Write compact, lazy Python: comprehensions, generator pipelines over a log file, and key-functions for sorting.",
+  "file": "01-python-1.md",
+  "packages": [],
+  "data": [
+   "server.log",
+   "students.csv"
+  ],
+  "exercises": [
+   "ex1",
+   "ex2",
+   "ex3",
+   "ex4",
+   "ex5"
+  ]
+ },
+ {
+  "id": "02-python-2",
+  "week": "Week 2",
+  "title": "Advanced Python II — Decorators, Errors, Types, Context Managers",
+  "blurb": "Make code robust and self-describing: decorators, exception handling for dirty data, type hints, dataclasses, with-blocks.",
+  "file": "02-python-2.md",
+  "packages": [],
+  "data": [
+   "students.csv"
+  ],
+  "exercises": [
+   "ex1",
+   "ex2",
+   "ex3",
+   "ex4"
+  ]
+ },
+ {
+  "id": "03-numpy",
+  "week": "Week 3",
+  "title": "NumPy — Arrays and Vectorised Computation",
+  "blurb": "Typed arrays, views vs copies, boolean masks, broadcasting, axis aggregations, reproducible randomness, linear algebra.",
+  "file": "03-numpy.md",
+  "packages": [
+   "numpy"
+  ],
+  "data": [
+   "sales_2025.csv"
+  ],
+  "exercises": [
+   "ex1",
+   "ex2",
+   "ex3",
+   "ex4",
+   "ex5"
+  ]
+ },
+ {
+  "id": "04-pandas-1",
+  "week": "Week 4",
+  "title": "Pandas I — Load, Select, Clean",
+  "blurb": "Series and DataFrames, the five-command inspection, loc/iloc/masks, cleaning dirty columns, choosing a missing-value strategy.",
+  "file": "04-pandas-1.md",
+  "packages": [
+   "numpy",
+   "pandas"
+  ],
+  "data": [
+   "students.csv"
+  ],
+  "exercises": [
+   "ex1",
+   "ex2",
+   "ex3",
+   "ex4",
+   "ex5"
+  ]
+ },
+ {
+  "id": "05-pandas-2",
+  "week": "Week 5",
+  "title": "Pandas II — GroupBy, Merge, Pivot, Time Series",
+  "blurb": "Split-apply-combine, joining tables, pivot tables, resampling and rolling windows, quick plots, and a complete EDA.",
+  "file": "05-pandas-2.md",
+  "packages": [
+   "numpy",
+   "pandas",
+   "matplotlib"
+  ],
+  "data": [
+   "students.csv",
+   "enrollments.csv",
+   "courses.json",
+   "sales_2025.csv"
+  ],
+  "exercises": [
+   "ex1",
+   "ex2",
+   "ex3",
+   "ex4",
+   "ex5"
+  ]
+ },
+ {
+  "id": "07-json",
+  "week": "Week 7",
+  "title": "JSON — Parsing, Nested Data, APIs",
+  "blurb": "Serialise and parse JSON, walk nested structures, flatten API-style records into DataFrames and back.",
+  "file": "07-json.md",
+  "packages": [
+   "pandas"
+  ],
+  "data": [
+   "courses.json",
+   "students.csv"
+  ],
+  "exercises": [
+   "ex1",
+   "ex2",
+   "ex3",
+   "ex4"
+  ]
+ },
+ {
+  "id": "13-sklearn",
+  "week": "Week 13",
+  "title": "Scikit-learn — Preprocessing, Models, Evaluation",
+  "blurb": "The estimator API, train/test split, scaling and encoding, a pipeline, classification and regression metrics.",
+  "file": "13-sklearn.md",
+  "packages": [
+   "numpy",
+   "pandas",
+   "scikit-learn",
+   "matplotlib"
+  ],
+  "data": [
+   "students.csv",
+   "sales_2025.csv"
+  ],
+  "exercises": [
+   "ex1",
+   "ex2",
+   "ex3"
+  ]
+ }
+]

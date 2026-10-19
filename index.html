@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Programming for Data Science · Interactive Tutorial</title>
+<meta name="description" content="Interactive tutorial for Programming for Data Science (606315), University of Petra. Python runs in your browser.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231f3a5f'/><text x='16' y='22' font-size='16' font-family='monospace' fill='white' text-anchor='middle'>py</text></svg>">
+<link rel="stylesheet" href="vendor/codemirror/codemirror.css">
+<link rel="stylesheet" href="vendor/codemirror/material-darker.css">
+<link rel="stylesheet" href="vendor/hljs/github.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#/">
+    <span class="brand-mark">py</span>
+    <span class="brand-text"><strong>Programming for Data Science</strong><span class="muted"> · 606315 · University of Petra</span></span>
+  </a>
+  <nav class="topnav">
+    <button id="btn-prev" class="btn ghost" title="Previous lesson">‹ Prev</button>
+    <select id="lesson-select" aria-label="Choose lesson"></select>
+    <button id="btn-next" class="btn ghost" title="Next lesson">Next ›</button>
+  </nav>
+  <div class="status" id="py-status"><span class="dot"></span><span id="py-status-text">Loading Python…</span></div>
+</header>
+
+<main id="app">
+  <!-- Home / lesson list -->
+  <section id="home" class="home hidden">
+    <div class="home-inner">
+      <h1>Learn by running the code</h1>
+      <p class="lead">Each lesson has the explanation on the left and a live Python editor on the right.
+        Python runs inside your browser — nothing to install, no account needed.
+        Edit any example, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, and see what happens.</p>
+      <ol id="lesson-list" class="lesson-list"></ol>
+      <p class="muted small">Progress is saved in this browser only. For the full course environment (terminal, Django, multiprocessing) use the
+        <a href="https://github.com/zmomani/pds-606315" target="_blank" rel="noopener">Codespaces repository</a>.</p>
+    </div>
+  </section>
+
+  <!-- Lesson view -->
+  <section id="lesson" class="lesson hidden">
+    <article id="lesson-content" class="lesson-content"></article>
+    <div id="splitter" class="splitter" role="separator" aria-orientation="vertical" title="Drag to resize"></div>
+    <aside class="workbench">
+      <div class="wb-toolbar">
+        <span class="wb-title" id="wb-title">Editor</span>
+        <span class="spacer"></span>
+        <button id="btn-run" class="btn primary" title="Run (Ctrl+Enter)">▶ Run</button>
+        <button id="btn-check" class="btn accent hidden" title="Check this exercise (Ctrl+Shift+Enter)">✓ Check</button>
+        <button id="btn-reset" class="btn ghost" title="Restore the original code">Reset</button>
+        <button id="btn-clear" class="btn ghost" title="Clear output">Clear</button>
+      </div>
+      <div class="editor-wrap"><textarea id="editor"></textarea></div>
+      <div class="output-head"><span>Output</span><span id="run-time" class="muted small"></span></div>
+      <div id="output" class="output" aria-live="polite"></div>
+    </aside>
+  </section>
+</main>
+
+<script src="vendor/codemirror/codemirror.js"></script>
+<script src="vendor/codemirror/python.js"></script>
+<script src="vendor/codemirror/matchbrackets.js"></script>
+<script src="vendor/codemirror/closebrackets.js"></script>
+<script src="vendor/marked.min.js"></script>
+<script src="vendor/hljs/highlight.js"></script>
+<script>window.PDS_PYODIDE_URL = window.PDS_PYODIDE_URL || "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/";</script>
+<script>document.write('<script src="' + window.PDS_PYODIDE_URL + 'pyodide.js"><\/script>');</script>
+<script src="app.js"></script>
+</body>
+</html>
