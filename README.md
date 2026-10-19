@@ -63,7 +63,7 @@ starter must **fail** its check (otherwise the check is vacuous) and the referen
 `tests/solutions.py` must **pass**. The GitHub Actions workflow runs this before every deployment.
 
 ```bash
-pip install numpy pandas matplotlib scikit-learn
+pip install -r requirements.txt
 python tests/run_lessons.py
 ```
 
