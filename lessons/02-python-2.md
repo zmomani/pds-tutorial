@@ -38,6 +38,60 @@ print(calculate(multiply, 5, 6))             # 30
 print(calculate(lambda a, b: a + b, 5, 6))   # 11 — any function will do
 ```
 
+### Why decorators? The repetition problem
+
+The reason for decorators is repetition. Suppose you want a message printed whenever certain functions run, and you have three of them:
+
+```python run
+def add(a, b):
+    print("calling add")        # same extra line...
+    return a + b
+
+def subtract(a, b):
+    print("calling subtract")   # ...copied here
+    return a - b
+
+def multiply(a, b):
+    print("calling multiply")   # ...and here
+    return a * b
+
+print(add(2, 3))
+print(subtract(7, 4))
+print(multiply(5, 6))
+```
+
+The extra behaviour is mixed into every function, and it is copied each time. If you later want to change it, you must edit all three. With 50 functions it gets worse, and the logging code hides what each function actually does.
+
+A decorator lets you write the extra behaviour once and attach it. Don't worry about how `log_call` works yet — the next section builds it step by step. Just compare the result with the version above:
+
+```python run
+def log_call(func):
+    def wrapper(a, b):
+        print(f"calling {func.__name__}")
+        return func(a, b)
+    return wrapper
+
+@log_call
+def add(a, b):
+    return a + b
+
+@log_call
+def subtract(a, b):
+    return a - b
+
+@log_call
+def multiply(a, b):
+    return a * b
+
+print(add(2, 3))
+print(subtract(7, 4))
+print(multiply(5, 6))
+```
+
+The output is identical, but now each function contains only its own job. The logging lives in one place, and one line above a function adds it. Changing the message means editing `log_call` once.
+
+(`func.__name__` is the function's own name as text, so one `log_call` prints the right name for each function it wraps. The `f` before the quote makes it an *f-string*: whatever is inside `{ }` is evaluated and inserted into the text.)
+
 ### Your first decorator — wrapping a function
 
 A decorator combines both ideas: it takes a function, defines an inner function that does something extra and then calls the original, and returns the inner function. The original is not replaced by the extra behaviour — it is **wrapped**: it sits inside and is still called.
