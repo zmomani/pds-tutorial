@@ -8,6 +8,194 @@ Last lesson was about expressing transformations compactly. This one is about ma
 
 A decorator is a function that takes a function and returns a new function. Writing `@timer` above a `def` is just shorthand for `f = timer(f)`. Decorators add behaviour *around* a function without touching its body: timing, caching, logging, retries.
 
+### Building block 1 — functions can live inside functions
+
+`outer` below does not multiply anything. It *builds* a new function, `inner`, that remembers `x`, and hands it back.
+
+```python run
+def outer(x):
+    def inner(y):
+        return x * y
+    return inner
+
+multiply_five = outer(5)
+print(multiply_five(6))     # 30
+print(outer(2)(10))         # 20 — build and call in one go
+```
+
+### Building block 2 — functions can be passed as arguments
+
+A function is a value like any other, so you can hand it to another function. (You already did this in lesson 1 with `key=lambda …`.)
+
+```python run
+def multiply(x, y):
+    return x * y
+
+def calculate(func, x, y):
+    return func(x, y)
+
+print(calculate(multiply, 5, 6))             # 30
+print(calculate(lambda a, b: a + b, 5, 6))   # 11 — any function will do
+```
+
+### Your first decorator — wrapping a function
+
+A decorator combines both ideas: it takes a function, defines an inner function that does something extra and then calls the original, and returns the inner function. The original is not replaced by the extra behaviour — it is **wrapped**: it sits inside and is still called.
+
+```python run
+def announce(func):
+    def inner():
+        print("Before")
+        func()
+    return inner
+
+def hello():
+    print("Hello")
+
+decorated = announce(hello)     # wrap by hand
+decorated()
+
+print("---")
+
+@announce                       # the same wrapping, written with @
+def hello():
+    print("Hello")
+
+hello()
+```
+
+`@announce` above a `def` is exactly `hello = announce(hello)`. After that line the name `hello` points to `inner`, and the original `hello` lives on inside it.
+
+### A decorator that guards its function
+
+Because the wrapper decides whether to call the original, it can refuse to. Here `inner` takes the same arguments as the function it replaces, checks them, and only then passes them on.
+
+```python run
+def safe_division(func):
+    def inner(a, b):
+        if b == 0:
+            print(f"Divide by Zero {a}/{b}: Exiting")
+            return None
+        print(f"Computing {a}/{b} = ", end="")
+        return func(a, b)
+    return inner
+
+@safe_division
+def divide(a, b):
+    return a / b
+
+print(divide(5, 6))    # Computing 5/6 = 0.8333333333333334
+divide(5, 0)           # Divide by Zero 5/0: Exiting
+```
+
+`divide(5, 0)` never reaches the original `divide`, so nothing can crash.
+
+### Stacking decorators
+
+You can put several decorators on one function, **one per line**. They are applied from the bottom up, but when you *call* the function the top one runs first and the original runs last, like layers of wrapping paper:
+
+```python run
+def deco_a(func):
+    def wrapper():
+        print("A before")
+        func()
+        print("A after")
+    return wrapper
+
+def deco_b(func):
+    def wrapper():
+        print("B before")
+        func()
+        print("B after")
+    return wrapper
+
+@deco_a
+@deco_b
+def work():
+    print("work")
+
+work()
+```
+
+`@deco_a` over `@deco_b` means `work = deco_a(deco_b(work))`: A's wrapper is the outermost layer, so it starts first and finishes last. That is why the order matters for guards — put the check that should happen first on top:
+
+```python run
+def divisor_not_zero(func):
+    def wrapper(a, b):
+        if b == 0:
+            print("Divide by Zero Error")
+            return
+        return func(a, b)
+    return wrapper
+
+def divisor_not_negative(func):
+    def wrapper(a, b):
+        if b < 0:
+            print("Divisor must be positive")
+            return
+        return func(a, b)
+    return wrapper
+
+@divisor_not_negative      # on top: checked first
+@divisor_not_zero          # checked second
+def division(a, b):
+    print(f"{a}/{b} = {a / b}")
+
+division(5, -6)    # Divisor must be positive
+division(5, 0)     # Divide by Zero Error
+division(5, 2)     # 5/2 = 2.5
+```
+
+:::exercise id=ex0 title="A guard decorator"
+Write the decorator `only_even` so that a decorated function runs **only when its argument is even**. For an odd argument the wrapper must print a short message and return `None` **without calling the original function**; otherwise it must return the original function's result.
+
+```python
+def only_even(func):
+    def wrapper(n):
+        ...          # replace this
+    return wrapper
+
+@only_even
+def half(n):
+    return n // 2
+
+print(half(10), half(7))    # expected: 5 None
+```
+
+```python check
+@only_even
+def _half(n):
+    return n // 2
+assert _half(10) == 5, "return the original function's result for an even number"
+assert _half(7) is None, "an odd number should give None"
+
+calls = []
+@only_even
+def _record(n):
+    calls.append(n)
+    return n
+_record(3)
+assert calls == [], "the original function must not run for an odd number"
+_record(4)
+assert calls == [4], "the original function must run for an even number"
+
+def _positive(func):
+    def wrapper(n):
+        return func(n) if n > 0 else None
+    return wrapper
+
+@_positive
+@only_even
+def _stacked(n):
+    return n // 2
+assert (_stacked(8), _stacked(-4), _stacked(3)) == (4, None, None), "only_even must work when stacked with another decorator"
+```
+:::
+
+### A practical decorator — `timer` and `@wraps`
+
+The wrappers above take exactly `(a, b)` because they wrap two-argument functions. A reusable decorator should accept *any* arguments, which is what `*args, **kwargs` means below.
+
 ```python run
 import time
 from functools import wraps
@@ -382,7 +570,7 @@ print(max(valid, key=lambda r: r.gpa))
 
 ## Summary
 
-* **Decorators** wrap behaviour around functions — `@timer`, `@lru_cache`, `@retry(n)`. Use `@wraps`.
+* **Decorators** wrap behaviour around functions — `@timer`, `@lru_cache`, `@retry(n)`. Use `@wraps`. When stacked, the top decorator runs first.
 * **Exceptions**: catch narrowly; decide explicitly what a bad value becomes; define your own hierarchy.
 * **Type hints + dataclasses** make records self-describing and editor-checkable.
 * **Context managers** guarantee clean-up; write yours with `@contextmanager`.

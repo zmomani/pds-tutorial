@@ -45,6 +45,15 @@ def top_per_major(path):
     return {m: name for m, (gpa, name) in best.items()}
 """,
 # ---------------------------------------------------------------- 02
+"02-python-2/ex0": """
+def only_even(func):
+    def wrapper(n):
+        if n % 2 != 0:
+            print("odd number, skipped")
+            return None
+        return func(n)
+    return wrapper
+""",
 "02-python-2/ex1": """
 from functools import wraps
 def count_calls(func):

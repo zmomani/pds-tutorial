@@ -12,7 +12,7 @@ browser* (via [Pyodide](https://pyodide.org)), so students need nothing but a li
 | # | Week | Lesson | Exercises |
 |---|---|---|---|
 | 01 | 1 | Advanced Python I — comprehensions, generators, lambdas | 5 |
-| 02 | 2 | Advanced Python II — decorators, errors, type hints, context managers | 4 |
+| 02 | 2 | Advanced Python II — decorators, errors, type hints, context managers | 5 |
 | 03 | 3 | NumPy — arrays, masks, broadcasting, random, linear algebra | 5 |
 | 04 | 4 | Pandas I — load, select, clean, missing values | 5 |
 | 05 | 5 | Pandas II — groupby, merge, pivot, time series, EDA | 5 |
