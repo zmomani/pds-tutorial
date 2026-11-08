@@ -10,7 +10,7 @@ Last lesson was about expressing transformations compactly. This one is about ma
 
 A decorator is a function that takes a function and returns a new function. Writing `@timer` above a `def` is just shorthand for `f = timer(f)`. Decorators add behaviour *around* a function without touching its body: timing, caching, logging, retries.
 
-### Decorators: building blocks 🟢
+### 1.1 · Decorators: building blocks 🟢
 
 A decorator combines two patterns: **nested functions** and **functions as arguments**.
 
@@ -40,7 +40,7 @@ print(calculate(multiply,5,6)) # 30
 
 A decorator combines both: it takes a function as input, wraps it in an inner function, and returns the wrapper.
 
-### More on decorators: the repetition problem
+### 1.2 · More on decorators: the repetition problem
 
 The reason for decorators is repetition. Suppose you want a message printed whenever certain functions run, and you have three of them:
 
@@ -94,7 +94,7 @@ The output is identical, but now each function contains only its own job. The lo
 
 (`func.__name__` is the function's own name as text, so one `log_call` prints the right name for each function it wraps. The `f` before the quote makes it an *f-string*: whatever is inside `{ }` is evaluated and inserted into the text.)
 
-### Your first decorator: manual and `@` syntax 🟢
+### 1.3 · Your first decorator: manual and `@` syntax 🟢
 
 The decorator below takes a function, defines an inner function that does something extra and then calls the original, and returns the inner function. The original is not replaced by the extra behaviour; it is **wrapped**: it sits inside and is still called.
 
@@ -125,7 +125,7 @@ func2()  # same result!
 
 `@func1` above a `def` is exactly `func2 = func1(func2)`. After that line the name `func2` points to `inner`, and the original `func2` lives on inside it. Both versions print `Before` and then `Hello`.
 
-### Decorators with parameters: a guard 🟢
+### 1.4 · Decorators with parameters: a guard 🟢
 
 Because the wrapper decides whether to call the original, it can refuse to. Here `inner` takes the same arguments as the function it replaces (`a, b`), checks them, and only then passes them on.
 
@@ -150,7 +150,7 @@ divide(5, 0)   # → Divide by Zero 5/0: Exiting
 
 **Execution flow** for `divide(5, 6)`: `divide(5,6)` is called, which is really `inner(5,6)`; `inner` runs its check; because `b ≠ 0` the check passes and `inner` calls `func(5,6)`, the original function. For `divide(5, 0)` the flow stops at the check, so the original `divide` never runs and nothing can crash.
 
-### Chaining decorators 🟢
+### 1.5 · Chaining decorators 🟢
 
 You can stack several decorators on one function, **one per line**. They are applied from the bottom up (innermost first), but when you *call* the function the top one runs first and the original runs last, like layers of wrapping paper.
 
@@ -187,7 +187,7 @@ division(5, 2)
 
 > The slide's comment says the lower decorator is the one that "runs first". That is true of *applying* the decorators (bottom up), but when the function is *called*, the top decorator's check happens first, as the outputs above show.
 
-### Practice: message sending system 🟢
+### 1.6 · Practice: message sending system 🟢
 
 Validate the credentials and the message before sending, a real-world pattern. Decorators like these are used extensively in Django and Flask for authentication, logging and permissions.
 
@@ -220,7 +220,7 @@ send_email(user_b,"Raghad","Hi") # Sending to Raghad by admin
 
 (The slide writes both decorators on one line; Python needs them on separate lines.) Authentication is on top, so it is checked first: `user_a` is rejected before the message is even looked at.
 
-### More on decorators: guards that return values and the wrapping order
+### 1.7 · More on decorators: guards that return values and the wrapping order
 
 The guard on the slide only *prints* the result. In real code the wrapper should usually `return` what the original returns, so the caller can use it:
 
@@ -314,7 +314,7 @@ assert (_stacked(8), _stacked(-4), _stacked(3)) == (4, None, None), "only_even m
 ```
 :::
 
-### A practical decorator — `timer` and `@wraps`
+### 1.8 · A practical decorator — `timer` and `@wraps`
 
 The wrappers above take exactly `(a, b)` because they wrap two-argument functions. A reusable decorator should accept *any* arguments, which is what `*args, **kwargs` means below.
 
@@ -342,7 +342,7 @@ print(slow_sum.__name__, "-", slow_sum.__doc__)
 
 Try deleting the `@wraps(func)` line and re-running: the name becomes `wrapper` and the docstring disappears.
 
-### `lru_cache` — memoisation in one line
+### 1.9 · `lru_cache` — memoisation in one line
 
 Expensive pure functions (feature computation, API lookups) can be cached by the standard library.
 
@@ -359,7 +359,7 @@ t0 = time.perf_counter(); fib(60); print(f"cached call: {(time.perf_counter() - 
 print(fib.cache_info())
 ```
 
-### Decorators with arguments
+### 1.10 · Decorators with arguments
 
 One more level: a *factory* that returns a decorator. This is the pattern behind `@retry(times=3)` or `@app.route("/")` in web frameworks.
 
@@ -441,7 +441,7 @@ print(cleaned)
 print("valid:", [g for g in cleaned if g is not None])
 ```
 
-### The full form: `try / except / else / finally`
+### 2.1 · The full form: `try / except / else / finally`
 
 `except` runs on error, `else` only when there was none, `finally` always. Catch the **narrowest** exception that makes sense — a bare `except:` also swallows typos and `KeyboardInterrupt`.
 
@@ -461,7 +461,7 @@ def load_number(path):
 print(load_number("does_not_exist.txt"))
 ```
 
-### Raising your own exceptions
+### 2.2 · Raising your own exceptions
 
 A small exception hierarchy lets callers catch exactly what they care about.
 

@@ -80,7 +80,7 @@ print(scaled)
 print(scaled == scaled2)
 ```
 
-### List comprehensions: syntax and flow 🟢
+### 2.1 · List comprehensions: syntax and flow 🟢
 
 The general form is
 
@@ -115,7 +115,7 @@ The first example uses the filter step (`if v % 2 == 0`), the second only transf
 
 > **Don't confuse `()` with `[]`.** Parentheses create a *generator expression*, not a list. You will meet those in the generators section below.
 
-### Dictionary comprehensions 🟢
+### 2.2 · Dictionary comprehensions 🟢
 
 The dictionary form puts a `key : value` pair in front of the `for`:
 
@@ -151,7 +151,7 @@ In both examples the loop variable (`name`, `s`) becomes the key, and the expres
 
 Generator expressions use `()`: the values are produced on demand, and you can iterate over them only once.
 
-### Filtering and conditional values
+### 2.3 · Filtering and conditional values
 
 An `if` **after** the `for` filters elements out. An `if/else` **before** the `for` chooses a value for every element. They look similar and do different things.
 
@@ -165,7 +165,7 @@ print(honours)
 print(status)
 ```
 
-### Dictionary and set comprehensions
+### 2.4 · More on dictionary comprehensions, and set comprehensions
 
 Braces give you a `dict` or a `set`. Building a lookup table, or inverting one, is where these shine.
 
@@ -184,7 +184,7 @@ majors = ["DS", "CS", "DS", "AI", "CS"]
 print({m for m in majors})                                   # unique values
 ```
 
-### Nested comprehensions
+### 2.5 · Nested comprehensions
 
 Flattening a list of lists is the one nested comprehension worth memorising. Read the `for` clauses left to right, exactly as you would write nested loops.
 
@@ -222,7 +222,7 @@ assert honours_pct([("x", 2.99)]) == {}, "2.99 is below the threshold"
 
 An **iterator** is an object that you can traverse one value at a time. Anything you can put in a `for` loop is *iterable*: lists, tuples, dicts, sets and strings. `iter()` turns an iterable into an iterator, and `next()` pulls the next value out of it.
 
-### The iterator protocol
+### 3.1 · The iterator protocol
 
 An iterator needs two methods: `__iter__()` returns the iterator itself, and `__next__()` returns the next value and **raises `StopIteration`** when there are no more.
 
@@ -245,7 +245,7 @@ for name in it:                  # the for loop calls next() for you
 print(next(it, "exhausted"))     # nothing left, so the default is returned
 ```
 
-### A custom iterator: squares
+### 3.2 · A custom iterator: squares
 
 ```python run
 class Squares:
@@ -301,7 +301,7 @@ else:
 
 A list holds every element at once. A **generator** produces one element at a time, on demand, so a 10 GB file can be processed with a few kilobytes of RAM. Any function containing `yield` is a generator function.
 
-### Generator functions: `yield` vs `return` 🟢
+### 4.1 · Generator functions: `yield` vs `return` 🟢
 
 `yield` produces values one at a time, pausing and resuming execution. Unlike `return`, the function's state is preserved between calls.
 
@@ -343,7 +343,7 @@ for num in genfibon(10):
 | Memory | All results at once | One at a time (lazy) |
 | State | Lost after return | Preserved between yields |
 
-### Generator expressions and practice 🟢
+### 4.2 · Generator expressions and practice 🟢
 
 ```python run
 # Generator expression (like list comp but with ())
@@ -430,7 +430,7 @@ A generator is used up as you read it. The first `[*g]` pulls every value out, s
 
 </details>
 
-### More on generators: laziness and memory
+### 4.3 · More on generators: laziness and memory
 
 ```python run
 def countdown(n):
@@ -460,7 +460,7 @@ print(sum(squares_gen))   # consumes it — a generator can be iterated only onc
 print(sum(squares_gen))   # already exhausted
 ```
 
-### A streaming pipeline over a log file
+### 4.4 · A streaming pipeline over a log file
 
 `data/server.log` has 500 lines like `2025-09-01T00:07:00 WARNING user=12 latency_ms=410`. Each function below is a generator; chained together they stream the file line by line — the same code would work on 500 million lines.
 
@@ -483,7 +483,7 @@ errs = list(latencies(only("ERROR", read_lines("data/server.log"))))
 print(len(errs), "error lines; mean latency", round(sum(errs) / len(errs)), "ms")
 ```
 
-### `itertools` — lazy building blocks
+### 4.5 · `itertools` — lazy building blocks
 
 ```python run
 from itertools import islice, chain, groupby
@@ -553,7 +553,7 @@ assert all(1 <= i <= 40 for i in ids), "user ids are between 1 and 40"
 
 A `lambda` is an anonymous one-expression function. Its natural home is the `key=` argument of `sorted`, `min` and `max` — and later, Pandas' `.apply()`.
 
-### Lambda: syntax and basics 🟢
+### 5.1 · Lambda: syntax and basics 🟢
 
 ```
 lambda  arguments  :  expression
@@ -587,7 +587,7 @@ print(square(5))  # → 25
 
 "Single expression only" means no loops, no assignments and no `return` inside a lambda. A conditional expression such as `a if cond else b` is still an expression, so `lambda n: "even" if n % 2 == 0 else "odd"` is allowed. Giving a lambda a name, as above, is only there to show that it matches the `def`; in real code a lambda is normally passed straight into another call, as the next sections show.
 
-### Lambda: closures and lambda as an argument 🟢
+### 5.2 · Lambda: closures and lambda as an argument 🟢
 
 A lambda can be the **return value** of a function. The lambda below remembers `domain` even after `email_gen` has finished, which is called a **closure**: an inner function that keeps the variables of the function around it. Decorators in the next lesson rely on exactly the same mechanism.
 
@@ -636,7 +636,7 @@ print(salary_calc(700, income_tax))  # → 665.0
 
 `tax_generator(0.16)` is a closure, a function with the 16% rate built in, and `salary_calc` receives the tax rule as an argument, so the same function works for any tax. Lambdas shine when they are passed to `map()`, `filter()` and `sorted()`, which come next.
 
-### `map()`: transform every element 🟢
+### 5.3 · `map()`: transform every element 🟢
 
 ```
 map( function,  iterable )  →  iterator of results
@@ -662,7 +662,7 @@ print([*totals])  # [25, 25, 18]
 
 `map()` returns an iterator, so use `[*result]` or `list(result)` to materialize it. In the second example the lambda only calls `sum`, so `map(sum, marks)` would do the same job.
 
-### `filter()`: select by condition 🟢
+### 5.4 · `filter()`: select by condition 🟢
 
 ```
 filter( function,  iterable )  →  items where function returns True
@@ -694,7 +694,7 @@ Looping over a dict gives its **keys**, so in the first example the lambda recei
 | Output size | Same as input | ≤ input (True items only) |
 | Lambda returns | Transformed value | True / False |
 
-### `sorted()`: custom sorting 🟢
+### 5.5 · `sorted()`: custom sorting 🟢
 
 ```
 sorted( iterable,  key=function,  reverse=False )  →  sorted list
@@ -725,7 +725,7 @@ The `key` function is called once on every element, and Python sorts by the valu
 | `filter(f, iter)` | Keep items where f→True | Select, validate, remove |
 | `sorted(iter, key=f)` | Sort by custom key | Rank, order, prioritize |
 
-### More on `lambda`, `sorted`, `map` and `filter`
+### 5.6 · More on `lambda`, `sorted`, `map` and `filter`
 
 ```python run
 records = [("Ahmad", 3.4, 2), ("Sara", 3.9, 4), ("Omar", 2.1, 1), ("Lina", 3.9, 3)]
