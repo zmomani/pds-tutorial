@@ -44,6 +44,30 @@ def top_per_major(path):
                 best[m] = (g, r["name"])
     return {m: name for m, (gpa, name) in best.items()}
 """,
+"01-python-1/s21": """
+class Countdown:
+    def __init__(self, k):
+        self.current = k
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.current <= 0:
+            raise StopIteration
+        value = self.current
+        self.current -= 1
+        return value
+""",
+"01-python-1/s24a": """
+import types
+cubes = (x**3 for x in range(1, 11))
+cube_list = list(cubes)
+print(cube_list)
+""",
+"01-python-1/s24b": """
+def emails(names):
+    for name in names:
+        yield f"{name.lower()}@uop.edu.jo"
+""",
 # ---------------------------------------------------------------- 02
 "02-python-2/ex0": """
 def only_even(func):

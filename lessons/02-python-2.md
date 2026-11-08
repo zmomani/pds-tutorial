@@ -4,13 +4,17 @@
 
 Last lesson was about expressing transformations compactly. This one is about making code **robust** — it survives dirty data — and **self-describing** — a colleague (or you in six months) can read a function's signature and know what it does.
 
+> **🟢 Study these for the exams.** A green light next to a heading means that part follows the lecture slides: its examples are the slides' own, with extra explanation added, and the light covers everything under that heading. Anything without a green light is extra practice and background — useful, but not what the exams are built on.
+
 ## 1 · Decorators
 
 A decorator is a function that takes a function and returns a new function. Writing `@timer` above a `def` is just shorthand for `f = timer(f)`. Decorators add behaviour *around* a function without touching its body: timing, caching, logging, retries.
 
-### Building block 1 — functions can live inside functions
+### Decorators: building blocks 🟢
 
-`outer` below does not multiply anything. It *builds* a new function, `inner`, that remembers `x`, and hands it back.
+A decorator combines two patterns: **nested functions** and **functions as arguments**.
+
+**Pattern 1: nested functions.** `outer` below does not multiply anything. It *builds* a new function, `inner`, that remembers `x`, and hands it back.
 
 ```python run
 def outer(x):
@@ -19,13 +23,10 @@ def outer(x):
     return inner
 
 multiply_five = outer(5)
-print(multiply_five(6))     # 30
-print(outer(2)(10))         # 20 — build and call in one go
+print(multiply_five(6))  # 30
 ```
 
-### Building block 2 — functions can be passed as arguments
-
-A function is a value like any other, so you can hand it to another function. (You already did this in lesson 1 with `key=lambda …`.)
+**Pattern 2: functions as arguments.** A function is a value like any other, so you can hand it to another function. (You already did this in lesson 1 with `key=lambda …`.)
 
 ```python run
 def multiply(x, y):
@@ -34,11 +35,12 @@ def multiply(x, y):
 def calculate(func, x, y):
     return func(x, y)
 
-print(calculate(multiply, 5, 6))             # 30
-print(calculate(lambda a, b: a + b, 5, 6))   # 11 — any function will do
+print(calculate(multiply,5,6)) # 30
 ```
 
-### Why decorators? The repetition problem
+A decorator combines both: it takes a function as input, wraps it in an inner function, and returns the wrapper.
+
+### More on decorators: the repetition problem
 
 The reason for decorators is repetition. Suppose you want a message printed whenever certain functions run, and you have three of them:
 
@@ -92,37 +94,135 @@ The output is identical, but now each function contains only its own job. The lo
 
 (`func.__name__` is the function's own name as text, so one `log_call` prints the right name for each function it wraps. The `f` before the quote makes it an *f-string*: whatever is inside `{ }` is evaluated and inserted into the text.)
 
-### Your first decorator — wrapping a function
+### Your first decorator: manual and `@` syntax 🟢
 
-A decorator combines both ideas: it takes a function, defines an inner function that does something extra and then calls the original, and returns the inner function. The original is not replaced by the extra behaviour — it is **wrapped**: it sits inside and is still called.
+The decorator below takes a function, defines an inner function that does something extra and then calls the original, and returns the inner function. The original is not replaced by the extra behaviour; it is **wrapped**: it sits inside and is still called.
+
+**Manual** (wrap by hand):
 
 ```python run
-def announce(func):
+def func1(func):
     def inner():
-        print("Before")
-        func()
+        print("Before"); func()
     return inner
-
-def hello():
-    print("Hello")
-
-decorated = announce(hello)     # wrap by hand
+def func2(): print("Hello")
+decorated = func1(func2)
 decorated()
-
-print("---")
-
-@announce                       # the same wrapping, written with @
-def hello():
-    print("Hello")
-
-hello()
 ```
 
-`@announce` above a `def` is exactly `hello = announce(hello)`. After that line the name `hello` points to `inner`, and the original `hello` lives on inside it.
+**Using `@` syntax** (preferred):
 
-### A decorator that guards its function
+```python run
+def func1(func):
+    def inner():
+        print("Before"); func()
+    return inner
 
-Because the wrapper decides whether to call the original, it can refuse to. Here `inner` takes the same arguments as the function it replaces, checks them, and only then passes them on.
+@func1
+def func2(): print("Hello")
+func2()  # same result!
+```
+
+`@func1` above a `def` is exactly `func2 = func1(func2)`. After that line the name `func2` points to `inner`, and the original `func2` lives on inside it. Both versions print `Before` and then `Hello`.
+
+### Decorators with parameters: a guard 🟢
+
+Because the wrapper decides whether to call the original, it can refuse to. Here `inner` takes the same arguments as the function it replaces (`a, b`), checks them, and only then passes them on.
+
+```python run
+def safe_division(func):
+    def inner(a, b):
+        if b == 0:
+            print(f"Divide by Zero {a}/{b}: Exiting")
+            return
+        else:
+            print(f"Computing {a}/{b} = ", end="")
+            func(a, b)
+    return inner
+
+@safe_division
+def divide(a, b):
+    print(f"{a/b}")
+
+divide(5, 6)   # → Computing 5/6 = 0.8333333333333334
+divide(5, 0)   # → Divide by Zero 5/0: Exiting
+```
+
+**Execution flow** for `divide(5, 6)`: `divide(5,6)` is called, which is really `inner(5,6)`; `inner` runs its check; because `b ≠ 0` the check passes and `inner` calls `func(5,6)`, the original function. For `divide(5, 0)` the flow stops at the check, so the original `divide` never runs and nothing can crash.
+
+### Chaining decorators 🟢
+
+You can stack several decorators on one function, **one per line**. They are applied from the bottom up (innermost first), but when you *call* the function the top one runs first and the original runs last, like layers of wrapping paper.
+
+```python run
+def divisor_not_zero(func):
+    def wrapper(a, b):
+        if b == 0: print("Divide by Zero Error"); return
+        return func(a, b)
+    return wrapper
+
+def divisor_not_negative(func):
+    def wrapper(a, b):
+        if b < 0: print("Divisor must be positive"); return
+        return func(a, b)
+    return wrapper
+
+@divisor_not_negative   # outer check: runs first when called
+@divisor_not_zero       # inner check: applied first, runs second when called
+def division(a, b):
+    print(f"{a}/{b} = {a/b}")
+
+division(5, -6)
+division(5, 0)
+division(5, 2)
+```
+
+`@divisor_not_negative` over `@divisor_not_zero` means `division = divisor_not_negative(divisor_not_zero(division))`. The negative check is the outer layer, so it runs first; the zero check is next; the original `division` runs last.
+
+| Call | Output |
+|---|---|
+| `division(5, -6)` | Divisor must be positive |
+| `division(5, 0)` | Divide by Zero Error |
+| `division(5, 2)` | 5/2 = 2.5 |
+
+> The slide's comment says the lower decorator is the one that "runs first". That is true of *applying* the decorators (bottom up), but when the function is *called*, the top decorator's check happens first, as the outputs above show.
+
+### Practice: message sending system 🟢
+
+Validate the credentials and the message before sending, a real-world pattern. Decorators like these are used extensively in Django and Flask for authentication, logging and permissions.
+
+```python run
+def check_authentication(func):
+    def wrapper(u, r, m):
+        if u['name']!='admin' or u['password']!='123':
+            print("Invalid credentials"); return
+        return func(u, r, m)
+    return wrapper
+
+def check_message(func):
+    def wrapper(u, r, m):
+        if r.strip()=="" or m.strip()=="":
+            print("Receiver or Message empty"); return
+        return func(u, r, m)
+    return wrapper
+
+@check_authentication
+@check_message
+def send_email(user, receiver, message):
+    print(f"Sending to {receiver} by {user['name']}")
+
+user_a = {'name':'bad','password':'wrong'}
+user_b = {'name':'admin','password':'123'}
+send_email(user_a,"","Hi")       # Invalid credentials
+send_email(user_b,"","Hi")       # Receiver or Message empty
+send_email(user_b,"Raghad","Hi") # Sending to Raghad by admin
+```
+
+(The slide writes both decorators on one line; Python needs them on separate lines.) Authentication is on top, so it is checked first: `user_a` is rejected before the message is even looked at.
+
+### More on decorators: guards that return values and the wrapping order
+
+The guard on the slide only *prints* the result. In real code the wrapper should usually `return` what the original returns, so the caller can use it:
 
 ```python run
 def safe_division(func):
@@ -130,7 +230,6 @@ def safe_division(func):
         if b == 0:
             print(f"Divide by Zero {a}/{b}: Exiting")
             return None
-        print(f"Computing {a}/{b} = ", end="")
         return func(a, b)
     return inner
 
@@ -138,15 +237,11 @@ def safe_division(func):
 def divide(a, b):
     return a / b
 
-print(divide(5, 6))    # Computing 5/6 = 0.8333333333333334
-divide(5, 0)           # Divide by Zero 5/0: Exiting
+print(divide(5, 6))    # 0.8333333333333334
+print(divide(5, 0))    # prints the warning, then None
 ```
 
-`divide(5, 0)` never reaches the original `divide`, so nothing can crash.
-
-### Stacking decorators
-
-You can put several decorators on one function, **one per line**. They are applied from the bottom up, but when you *call* the function the top one runs first and the original runs last, like layers of wrapping paper:
+To see the layers of stacking directly, give each wrapper a "before" and "after" print:
 
 ```python run
 def deco_a(func):
@@ -171,34 +266,7 @@ def work():
 work()
 ```
 
-`@deco_a` over `@deco_b` means `work = deco_a(deco_b(work))`: A's wrapper is the outermost layer, so it starts first and finishes last. That is why the order matters for guards — put the check that should happen first on top:
-
-```python run
-def divisor_not_zero(func):
-    def wrapper(a, b):
-        if b == 0:
-            print("Divide by Zero Error")
-            return
-        return func(a, b)
-    return wrapper
-
-def divisor_not_negative(func):
-    def wrapper(a, b):
-        if b < 0:
-            print("Divisor must be positive")
-            return
-        return func(a, b)
-    return wrapper
-
-@divisor_not_negative      # on top: checked first
-@divisor_not_zero          # checked second
-def division(a, b):
-    print(f"{a}/{b} = {a / b}")
-
-division(5, -6)    # Divisor must be positive
-division(5, 0)     # Divide by Zero Error
-division(5, 2)     # 5/2 = 2.5
-```
+`@deco_a` over `@deco_b` means `work = deco_a(deco_b(work))`: A's wrapper is the outermost layer, so it starts first and finishes last.
 
 :::exercise id=ex0 title="A guard decorator"
 Write the decorator `only_even` so that a decorated function runs **only when its argument is even**. For an odd argument the wrapper must print a short message and return `None` **without calling the original function**; otherwise it must return the original function's result.

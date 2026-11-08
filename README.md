@@ -11,7 +11,7 @@ browser* (via [Pyodide](https://pyodide.org)), so students need nothing but a li
 
 | # | Week | Lesson | Exercises |
 |---|---|---|---|
-| 01 | 1 | Advanced Python I — comprehensions, generators, lambdas | 5 |
+| 01 | 1 | Advanced Python I — modules, comprehensions, generators, lambdas | 8 |
 | 02 | 2 | Advanced Python II — decorators, errors, type hints, context managers | 5 |
 | 03 | 3 | NumPy — arrays, masks, broadcasting, random, linear algebra | 5 |
 | 04 | 4 | Pandas I — load, select, clean, missing values | 5 |
@@ -21,6 +21,10 @@ browser* (via [Pyodide](https://pyodide.org)), so students need nothing but a li
 
 Weeks 6 (multiprocessing), 8–9 (web scraping) and 10–12 (Django) need a real terminal and network access, so
 they live in the [Codespaces repository](https://github.com/zmomani/pds-606315) instead.
+
+**🟢 Green light.** In lessons 01 and 02, a green light next to a heading marks material that follows the lecture
+slides (their examples are the slides' own, with added explanation). That is what the exams are built on;
+anything unmarked is extra practice and background.
 
 ## How a lesson works
 

@@ -2,8 +2,8 @@
  {
   "id": "01-python-1",
   "week": "Week 1",
-  "title": "Advanced Python I — Comprehensions, Generators, Lambdas",
-  "blurb": "Write compact, lazy Python: comprehensions, generator pipelines over a log file, and key-functions for sorting.",
+  "title": "Advanced Python I — Modules, Comprehensions, Generators, Lambdas",
+  "blurb": "Modules, compact comprehensions, iterators and lazy generator pipelines, lambda/map/filter/sorted, virtual environments and command-line arguments. Green-light sections follow the lecture slides.",
   "file": "01-python-1.md",
   "packages": [],
   "data": [
@@ -12,6 +12,9 @@
   ],
   "exercises": [
    "ex1",
+   "s21",
+   "s24a",
+   "s24b",
    "ex2",
    "ex3",
    "ex4",
