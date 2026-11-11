@@ -43,7 +43,7 @@
   "id": "03-numpy",
   "week": "Week 3",
   "title": "NumPy — Arrays and Vectorised Computation",
-  "blurb": "Typed arrays, views vs copies, boolean masks, broadcasting, axis aggregations, reproducible randomness, linear algebra.",
+  "blurb": "Creating, indexing, slicing and reshaping arrays; dtypes, views vs copies; joining, splitting, searching, sorting, masks, random numbers and ufuncs, plus broadcasting and linear algebra. Green-light sections follow the lecture slides.",
   "file": "03-numpy.md",
   "packages": [
    "numpy"
@@ -52,10 +52,13 @@
    "sales_2025.csv"
   ],
   "exercises": [
+   "s9",
+   "s12",
+   "s15",
    "ex1",
    "ex2",
-   "ex3",
    "ex4",
+   "ex3",
    "ex5"
   ]
  },

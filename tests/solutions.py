@@ -126,6 +126,30 @@ def override(d, key, value):
             d[key] = old
 """,
 # ---------------------------------------------------------------- 03
+"03-numpy/s9": """
+import numpy as np
+random_arr = np.random.randint(0, 100, size=(4, 4))
+lin_arr = np.linspace(5, 50, 10)
+arr_tuple = np.array((10, 20, 30, 40), dtype=float)
+""",
+"03-numpy/s12": """
+import numpy as np
+arr_2d = np.array([[10, 20, 30],
+                   [40, 50, 60],
+                   [70, 80, 90]])
+first = arr_2d[2, 0]
+second = arr_2d[:, 1]
+last = arr_2d[-1, -1]
+""",
+"03-numpy/s15": """
+import numpy as np
+arr_2d = np.array([[1, 2, 3, 4],
+                   [5, 6, 7, 8],
+                   [9, 10, 11, 12]])
+last_two = arr_2d[1:, :]
+first_cols = arr_2d[:, :2]
+every_other = arr_2d[::2, :]
+""",
 "03-numpy/ex1": """
 import numpy as np
 def frame():
