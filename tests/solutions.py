@@ -126,139 +126,8 @@ def override(d, key, value):
             d[key] = old
 """,
 # ---------------------------------------------------------------- 03
-"03-numpy/s9": """
-import numpy as np
-random_arr = np.random.randint(0, 100, size=(4, 4))
-lin_arr = np.linspace(5, 50, 10)
-arr_tuple = np.array((10, 20, 30, 40), dtype=float)
-""",
-"03-numpy/s12": """
-import numpy as np
-arr_2d = np.array([[10, 20, 30],
-                   [40, 50, 60],
-                   [70, 80, 90]])
-first = arr_2d[2, 0]
-second = arr_2d[:, 1]
-last = arr_2d[-1, -1]
-""",
-"03-numpy/s15": """
-import numpy as np
-arr_2d = np.array([[1, 2, 3, 4],
-                   [5, 6, 7, 8],
-                   [9, 10, 11, 12]])
-last_two = arr_2d[1:, :]
-first_cols = arr_2d[:, :2]
-every_other = arr_2d[::2, :]
-""",
-"03-numpy/ex1": """
-import numpy as np
-def frame():
-    f = np.ones((5, 5), dtype=int)
-    f[1:-1, 1:-1] = 0
-    return f
-""",
-"03-numpy/ex2": """
-import numpy as np
-def clip_gpa(g):
-    out = g.copy()
-    changed = (out < 0) | (out > 4)
-    out[out < 0] = 0
-    out[out > 4] = 4
-    return out, int(changed.sum())
-""",
-"03-numpy/ex3": """
-import numpy as np
-def normalise_rows(M):
-    s = M.sum(axis=1, keepdims=True)
-    return np.divide(M, s, out=np.zeros_like(M, dtype=float), where=s != 0)
-""",
-"03-numpy/ex4": """
-import numpy as np
-def sample_means(seed, n_samples, size):
-    rng = np.random.default_rng(seed)
-    return rng.normal(0, 1, size=(n_samples, size)).mean(axis=1)
-""",
-"03-numpy/ex5": """
-import numpy as np
-def pairwise(P):
-    diff = P[:, None, :] - P[None, :, :]
-    return np.sqrt((diff ** 2).sum(axis=2))
-""",
 # ---------------------------------------------------------------- 04
-"04-pandas-1/ex1": """
-import pandas as pd
-def report(df):
-    miss = df.isna().sum()
-    return {"rows": len(df), "cols": df.shape[1],
-            "missing": {c: int(v) for c, v in miss.items() if v > 0},
-            "object_cols": df.select_dtypes("object").columns.tolist()}
-""",
-"04-pandas-1/ex2": """
-import pandas as pd
-def juniors_north(df):
-    mask = df["year"].isin([1, 2]) & df["city"].isin(["Irbid", "Zarqa"])
-    return df.loc[mask, ["name", "major"]].sort_values("name")
-""",
-"04-pandas-1/ex3": """
-import pandas as pd
-def audit(raw):
-    gpa_num = pd.to_numeric(raw["gpa"], errors="coerce")
-    blank = raw["gpa"].isna()
-    return {"duplicates": int(raw.duplicated().sum()),
-            "bad_gpa": int((gpa_num.isna() & ~blank).sum()),
-            "blank_gpa": int(blank.sum()),
-            "untrimmed_major": int((raw["major"] != raw["major"].str.strip()).sum()),
-            "upper_city": int(raw["city"].str.isupper().sum())}
-""",
-"04-pandas-1/ex4": """
-import pandas as pd
-def fill_gpa_by_major(df):
-    out = df.copy()
-    out["gpa"] = out["gpa"].fillna(out.groupby("major")["gpa"].transform("median"))
-    return out
-""",
-"04-pandas-1/ex5": """
-import pandas as pd
-def derive(df):
-    return df.assign(progress=(df["credits"] / 132 * 100).round(1),
-                     band=pd.cut(df["gpa"], bins=[0, 2, 3, 4.0001], labels=["C", "B", "A"], right=False))
-""",
 # ---------------------------------------------------------------- 05
-"05-pandas-2/ex1": """
-import pandas as pd
-def city_report(df):
-    return (df.groupby("city")
-              .agg(students=("student_id", "size"), mean_gpa=("gpa", "mean"),
-                   top_major=("major", lambda s: s.mode()[0]))
-              .round({"mean_gpa": 2}).sort_values("students", ascending=False))
-""",
-"05-pandas-2/ex2": """
-import pandas as pd
-def grades_with_names(students, enr):
-    return (enr.merge(students[["student_id", "name", "major"]], on="student_id", how="inner")
-               .dropna(subset=["grade"])
-               [["student_id", "name", "major", "course_code", "grade"]].reset_index(drop=True))
-""",
-"05-pandas-2/ex3": """
-import pandas as pd
-def grade_pivot(g):
-    p = g.pivot_table(index="major", columns="course_code", values="grade", aggfunc="mean")
-    p["overall"] = g.groupby("major")["grade"].mean()
-    return p.round(1)
-""",
-"05-pandas-2/ex4": """
-import pandas as pd
-def monthly_product_revenue(sales):
-    s = sales.assign(revenue=sales["units"] * sales["unit_price"])
-    return (s.pivot_table(index="date", columns="product", values="revenue", aggfunc="sum")
-             .resample("ME").sum().round(0))
-""",
-"05-pandas-2/ex5": """
-import pandas as pd
-def best_week(sales):
-    daily = sales.assign(rev=sales["units"] * sales["unit_price"]).groupby("date")["rev"].sum()
-    return daily.rolling(7).sum().idxmax()
-""",
 # ---------------------------------------------------------------- 07
 "07-json/ex1": """
 import json
@@ -328,7 +197,35 @@ def evaluate(model, X, y):
             "r2": round(r2_score(y_test, p), 2)}
 """,
 
-"sample-textbook/a1": """
+"03-numpy/n1": """
+import numpy as np
+
+def evens(n):
+    return np.arange(0, 2 * n, 2)
+""",
+
+"03-numpy/n2": """
+import numpy as np
+
+def inside(table):
+    return table[1:-1, 1:-1].copy()
+""",
+
+"03-numpy/n3": """
+import numpy as np
+
+def rescale(x):
+    return (x - x.min()) / (x.max() - x.min())
+""",
+
+"03-numpy/n4": """
+import numpy as np
+
+def hardest_exam(scores):
+    return scores.mean(axis=0).argmin()
+""",
+
+"03-numpy/n5": """
 import numpy as np
 
 def row_shares(x):
@@ -336,11 +233,85 @@ def row_shares(x):
     return x / totals
 """,
 
-"sample-textbook/b1": """
+"03-numpy/n6": """
+import numpy as np
+
+def count_between(x, low, high):
+    return np.sum((x >= low) & (x <= high))
+""",
+
+"03-numpy/n7": """
+import numpy as np
+
+def ranking(names, totals):
+    order = np.argsort(totals)
+    return names[order][::-1]
+""",
+
+"04-pandas-1/p1": """
+import pandas as pd
+
+def top_in_major(df, major, minimum):
+    return df.loc[(df["major"] == major) & (df["gpa"] >= minimum), ["name", "gpa"]]
+""",
+
+"04-pandas-1/p2": """
+import pandas as pd
+
+def total_points(a, b):
+    return a.add(b, fill_value=0)
+""",
+
+"04-pandas-1/p3": """
+import pandas as pd
+
+def clean_gpa(df):
+    out = df.copy()
+    out["gpa"] = pd.to_numeric(out["gpa"], errors="coerce")
+    out["gpa"] = out["gpa"].fillna(out["gpa"].median())
+    return out
+""",
+
+"04-pandas-1/p4": """
+import pandas as pd
+
+def tidy(df):
+    out = df.copy()
+    out["major"] = out["major"].str.strip()
+    out["city"] = out["city"].str.title()
+    return out
+""",
+
+"05-pandas-2/q1": """
+import pandas as pd
+
+def average_by_title(enrollments, courses):
+    joined = pd.merge(enrollments, courses, left_on="course_code", right_on="code")
+    return joined.groupby("title")["grade"].mean()
+""",
+
+"05-pandas-2/q2": """
 import pandas as pd
 
 def above_major_mean(df):
     major_mean = df.groupby("major")["gpa"].transform("mean")
     return df[df["gpa"] > major_mean]
+""",
+
+"05-pandas-2/q3": """
+import pandas as pd
+
+def units_grid(sales):
+    return sales.pivot_table(values="units", index="city", columns="product", aggfunc="sum")
+""",
+
+"05-pandas-2/q4": """
+import pandas as pd
+
+def best_month(sales):
+    df = sales.copy()
+    df["date"] = pd.to_datetime(df["date"])
+    df["revenue"] = df["units"] * df["unit_price"]
+    return df.groupby(df["date"].dt.month)["revenue"].sum().idxmax()
 """,
 }

@@ -43,30 +43,28 @@
   "id": "03-numpy",
   "week": "Week 3",
   "title": "NumPy — Arrays and Vectorised Computation",
-  "blurb": "Creating, indexing, slicing and reshaping arrays; dtypes, views vs copies; joining, splitting, searching, sorting, masks, random numbers and ufuncs, plus broadcasting and linear algebra. Green-light sections follow the lecture slides.",
+  "blurb": "Lists and arrays, indexing and slicing, views and copies, universal functions, aggregations and axis, broadcasting, masks, fancy indexing, sorting, plus random numbers and linear algebra. Follows Chapter 2 of the textbook.",
   "file": "03-numpy.md",
   "packages": [
    "numpy"
   ],
-  "data": [
-   "sales_2025.csv"
-  ],
+  "data": [],
   "exercises": [
-   "s9",
-   "s12",
-   "s15",
-   "ex1",
-   "ex2",
-   "ex4",
-   "ex3",
-   "ex5"
-  ]
+   "n1",
+   "n2",
+   "n3",
+   "n4",
+   "n5",
+   "n6",
+   "n7"
+  ],
+  "notes": true
  },
  {
   "id": "04-pandas-1",
   "week": "Week 4",
-  "title": "Pandas I — Load, Select, Clean",
-  "blurb": "Series and DataFrames, the five-command inspection, loc/iloc/masks, cleaning dirty columns, choosing a missing-value strategy.",
+  "title": "Pandas I — Tables, Selection and Cleaning",
+  "blurb": "Series and DataFrames, loc and iloc, masks, index alignment, missing data, text columns and hierarchical indexing. Follows the first half of Chapter 3 of the textbook.",
   "file": "04-pandas-1.md",
   "packages": [
    "numpy",
@@ -76,23 +74,22 @@
    "students.csv"
   ],
   "exercises": [
-   "ex1",
-   "ex2",
-   "ex3",
-   "ex4",
-   "ex5"
-  ]
+   "p1",
+   "p2",
+   "p3",
+   "p4"
+  ],
+  "notes": true
  },
  {
   "id": "05-pandas-2",
   "week": "Week 5",
-  "title": "Pandas II — GroupBy, Merge, Pivot, Time Series",
-  "blurb": "Split-apply-combine, joining tables, pivot tables, resampling and rolling windows, quick plots, and a complete EDA.",
+  "title": "Pandas II — Combining, Grouping, Pivoting and Time Series",
+  "blurb": "concat and merge, split-apply-combine with groupby, pivot tables, dates and resampling, query, and the Project Stage 1 structure. Follows the second half of Chapter 3 of the textbook.",
   "file": "05-pandas-2.md",
   "packages": [
    "numpy",
-   "pandas",
-   "matplotlib"
+   "pandas"
   ],
   "data": [
    "students.csv",
@@ -101,12 +98,12 @@
    "sales_2025.csv"
   ],
   "exercises": [
-   "ex1",
-   "ex2",
-   "ex3",
-   "ex4",
-   "ex5"
-  ]
+   "q1",
+   "q2",
+   "q3",
+   "q4"
+  ],
+  "notes": true
  },
  {
   "id": "07-json",
@@ -148,22 +145,6 @@
    "ex1",
    "ex2",
    "ex3"
-  ]
- },
- {
-  "id": "sample-textbook",
-  "week": "Sample",
-  "title": "Sample — Textbook-based Sections (Broadcasting, GroupBy)",
-  "blurb": "Preview of the textbook-based format for Weeks 3–5: runnable examples, diagrams, hover notes on code, mini challenges.",
-  "file": "sample-textbook.md",
-  "packages": [
-   "numpy",
-   "pandas"
-  ],
-  "data": [],
-  "exercises": [
-   "a1",
-   "b1"
   ]
  }
 ]

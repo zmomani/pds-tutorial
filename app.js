@@ -322,9 +322,11 @@ builtins.input = input
   }
 
   // ---------------------------------------------------------------- helper notes on code keywords
-  // Identifiers listed in lessons/glossary.json get a dotted underline in lesson code;
-  // hovering (or focusing, or tapping) one shows a short note. A key that starts with "."
-  // applies only to a method or attribute, e.g. ".sum" matches scores.sum() but not sum(x).
+  // In lessons whose manifest entry has "notes": true, identifiers listed in lessons/glossary.json
+  // get a dotted underline in lesson code; hovering (or focusing, or tapping) one shows a short note.
+  // A key that starts with "." applies only to a method or attribute, e.g. ".sum" matches
+  // scores.sum() but not sum(x). The notes describe NumPy and Pandas meanings, so lessons on
+  // other topics should not switch them on without checking the wording.
   function annotateCode(root) {
     const G = S.glossary;
     if (!G || !Object.keys(G).length) return;
@@ -435,7 +437,7 @@ builtins.input = input
       const ph = el.content.querySelector(`[data-challenge="${n}"]`);
       if (ph) ph.replaceWith(buildChallengeCard(ch));
     });
-    annotateCode(el.content);
+    if (lesson.notes) annotateCode(el.content);
     hideTip();
 
     // prev / next footer

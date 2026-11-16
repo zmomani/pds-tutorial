@@ -13,19 +13,21 @@ browser* (via [Pyodide](https://pyodide.org)), so students need nothing but a li
 |---|---|---|---|
 | 01 | 1 | Advanced Python I — modules, comprehensions, generators, lambdas | 8 |
 | 02 | 2 | Advanced Python II — decorators, errors, type hints, context managers | 5 |
-| 03 | 3 | NumPy — creating, indexing, slicing, dtypes, joining, sorting, masks, random, ufuncs, broadcasting | 8 |
-| 04 | 4 | Pandas I — load, select, clean, missing values | 5 |
-| 05 | 5 | Pandas II — groupby, merge, pivot, time series, EDA | 5 |
+| 03 | 3 | NumPy — arrays, slicing and views, ufuncs, aggregations, broadcasting, masks, fancy indexing, sorting, random numbers, linear algebra | 7 |
+| 04 | 4 | Pandas I — Series and DataFrames, loc/iloc, alignment, missing data, text columns, hierarchical indexing | 4 |
+| 05 | 5 | Pandas II — concat, merge, groupby, pivot tables, time series, query, Stage 1 EDA | 4 |
 | 07 | 7 | JSON — parsing, nested data, APIs | 4 |
 | 13 | 13 | Scikit-learn — preprocessing, pipelines, evaluation | 3 |
-| — | Sample | Textbook-based sections (broadcasting, GroupBy) — preview of the format for Weeks 3–5 | 2 |
 
 Weeks 6 (multiprocessing), 8–9 (web scraping) and 10–12 (Django) need a real terminal and network access, so
 they live in the [Codespaces repository](https://github.com/zmomani/pds-606315) instead.
 
-**🟢 Green light.** In lessons 01, 02 and 03, a green light next to a heading marks material that follows the lecture
-slides (their examples are the slides' own, with added explanation). That is what the exams are built on;
-anything unmarked is extra practice and background.
+**Textbook-based lessons.** Lessons 03, 04 and 05 follow the order of Chapters 2 and 3 of the course textbook
+(Jake VanderPlas, *Python Data Science Handbook*, 2nd ed., O'Reilly). The explanations, examples and diagrams are
+written for this course; each section links to the matching section of the textbook's free online edition.
+
+**🟢 Green light.** In lessons 01 and 02, a green light next to a heading marks material that follows the lecture
+slides (their examples are the slides' own, with added explanation).
 
 ## How a lesson works
 
@@ -69,15 +71,16 @@ The answer.
 :::
 ````
 
-**Helper notes.** Words in lesson code that are listed in `lessons/glossary.json` get a dotted underline and show
-a short note on hover, keyboard focus or tap. A key that starts with `.` applies only to a method or attribute
+**Helper notes.** In a lesson whose manifest entry has `"notes": true`, words in lesson code that are listed in
+`lessons/glossary.json` get a dotted underline and show a short note on hover, keyboard focus or tap. The notes
+describe NumPy and Pandas meanings, so check the wording before switching them on for a lesson on another topic. A key that starts with `.` applies only to a method or attribute
 (`.sum` matches `scores.sum()` but not `sum(x)`). Edit that one file to change or add notes.
 
 **Figures** are SVG files in `figures/`, drawn by `figures/make_figures.py`, and are included with the usual
 `![alt text](figures/name.svg)`.
 
 Manifest fields: `packages` (Pyodide packages to load, e.g. `numpy`, `pandas`, `matplotlib`, `scikit-learn`),
-`data` (files from `data/` to mount), `exercises` (ids, for the progress counter).
+`data` (files from `data/` to mount), `exercises` (ids, for the progress counter), `notes` (`true` to show helper notes).
 
 ## Testing
 

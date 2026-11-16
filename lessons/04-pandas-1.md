@@ -1,328 +1,611 @@
-# Pandas I — Load, Select, Clean
+# Pandas I — Tables, Selection and Cleaning
 
 <p class="lesson-intro">Week 4 · Programming for Data Science (606315)</p>
 
-Pandas puts **labels** on NumPy arrays. A `DataFrame` is a table whose columns are typed arrays sharing a row index; masks, broadcasting and `axis` all still apply. This lesson takes a dirty CSV from first look to a clean table — the first half of every data project.
+NumPy arrays are fast, but real data comes with **labels**: column names, student numbers, dates. Pandas adds labels to NumPy arrays and builds the tools of everyday data work on top of them. This week covers the objects themselves, how to select from them, and how to clean a messy table.
 
-> A DataFrame that is the **last expression** of your code is shown as a table in the output panel, just as in a notebook. `print(df)` gives plain text instead.
+> **About this lesson.** It follows the first half of Chapter 3 of the course textbook, Jake VanderPlas, *Python Data Science Handbook* (2nd ed., O'Reilly). The explanations, examples and diagrams are written for this course; each section ends with a "Read more" link to the matching section of the textbook's free online edition.
+>
+> **Helper notes.** Words in the code with a dotted underline have a short note. Hover over one (or tap it) to read what it does. A table that is the **last line** of an example is shown as a formatted table in the Output panel.
 
-## 1 · Series and DataFrame
+## 1 · The Pandas objects
+
+### 1.1 · Series: one labelled column
+
+A `Series` is a 1-D array of values together with an **index** of labels, one label per value.
 
 ```python run
 import pandas as pd
 
-s = pd.Series([3.4, 2.1, 3.9], index=["Ahmad", "Sara", "Omar"], name="gpa")
-print(s)
-print("label access:", s["Sara"], "  position access:", s.iloc[1])
+gpa = pd.Series([3.4, 2.1, 3.9, 3.2])
+print(gpa)
+print("values:", gpa.values)
+print("index :", gpa.index)
+```
+
+When you give no index, Pandas numbers the rows 0, 1, 2, … The point of a Series is that the labels can be anything you choose.
+
+```python run
+import pandas as pd
+
+gpa = pd.Series([3.4, 2.1, 3.9, 3.2], index=["Ahmad", "Sara", "Omar", "Lina"])
+print(gpa)
+print(gpa["Omar"])
+```
+
+A Series therefore behaves like a NumPy array and like a dictionary at the same time. A dictionary turns into a Series directly: the keys become the index.
+
+```python run
+import pandas as pd
+
+credits = pd.Series({"Ahmad": 62, "Sara": 110, "Omar": 28})
+print(credits)
+print("Sara" in credits)      # membership tests the labels, like a dictionary
+```
+
+### 1.2 · DataFrame: a table
+
+A `DataFrame` is a table. The simplest way to think of it is as several Series that **share one index**, each one forming a column.
+
+![A small table with its three parts labelled: the index down the left, the column names along the top, and the values in the middle. One column is highlighted as a Series.](figures/dataframe.svg)
+
+<p class="caption">Every DataFrame has an index (row labels), columns (column labels) and values. Any single column is a Series.</p>
+
+```python run
+import pandas as pd
 
 df = pd.DataFrame({
-    "name":  ["Ahmad", "Sara", "Omar", "Lina"],
     "major": ["DS", "CS", "DS", "AI"],
-    "gpa":   [3.4, 2.1, 3.9, 3.2],
     "year":  [2, 4, 1, 3],
-})
-print(df.shape, df.columns.tolist())
-print(df.dtypes)
+    "gpa":   [3.4, 2.1, 3.9, 3.2],
+}, index=["Ahmad", "Sara", "Omar", "Lina"])
+
+print(df)
+print("index  :", df.index.tolist())
+print("columns:", df.columns.tolist())
+print("shape  :", df.shape)
+```
+
+```python run
+import pandas as pd
+
+df = pd.DataFrame({
+    "major": ["DS", "CS", "DS", "AI"],
+    "year":  [2, 4, 1, 3],
+    "gpa":   [3.4, 2.1, 3.9, 3.2],
+}, index=["Ahmad", "Sara", "Omar", "Lina"])
+
+column = df["gpa"]            # one column is a Series
+print(type(column).__name__)
+print(column)
+```
+
+### 1.3 · Loading a real file
+
+Tables usually come from files. `pd.read_csv` reads one into a DataFrame, and five short commands give you a first look at it.
+
+```python run
+import pandas as pd
+
+students = pd.read_csv("data/students.csv")
+
+print(students.shape)              # rows, columns
+print(students.dtypes)             # the type of each column
+print(students.isna().sum())       # missing values per column
+students.head()                    # the first five rows
+```
+
+Look at the types. `gpa` should be a number, but it was read as text. Something in that column is not a number, and Section 4 finds it and fixes it.
+
+:::challenge title="Series or DataFrame?"
+`students` is the table loaded above. What type is each of these: a Series or a DataFrame?
+
+1. `students["gpa"]`
+2. `students[["gpa"]]`
+3. `students[["name", "gpa"]]`
+---
+1. A **Series**. One pair of brackets with one column name gives that column.
+2. A **DataFrame** with one column. The inner brackets make a *list* of column names, and a list of names always gives a table, even when the list has one name.
+3. A **DataFrame** with two columns.
+
+This matters because some methods exist only on one of the two types, and because a one-column DataFrame prints differently from a Series.
+:::
+
+**Read more:** [Introducing Pandas Objects](https://jakevdp.github.io/PythonDataScienceHandbook/03.01-introducing-pandas-objects.html)
+
+## 2 · Indexing and selection
+
+### 2.1 · `loc` uses labels, `iloc` uses positions
+
+There are two ways to say which rows you want: by **label** or by **position**. Pandas keeps them apart with two indexers, so there is never any doubt about which one you mean.
+
+```python run
+import pandas as pd
+
+gpa = pd.Series([3.4, 2.1, 3.9, 3.2], index=["Ahmad", "Sara", "Omar", "Lina"])
+
+print(gpa.loc["Sara"])              # by label
+print(gpa.iloc[1])                  # by position: the second value
+print(gpa.loc["Sara":"Lina"])       # a label slice INCLUDES the end
+print(gpa.iloc[1:3])                # a position slice excludes the end, as in Python
+```
+
+> **Look out.** The two kinds of slice treat the end differently. `gpa.loc["Sara":"Lina"]` includes Lina; `gpa.iloc[1:3]` stops before position 3.
+
+The difference becomes a real trap when the labels are themselves integers.
+
+:::challenge title="Label or position?"
+What does each line print? Decide first, then run the code.
+
+```python run
+import pandas as pd
+
+s = pd.Series(["a", "b", "c"], index=[1, 2, 3])
+print(s.loc[1])
+print(s.iloc[1])
+print(len(s.loc[1:2]), len(s.iloc[1:2]))
+```
+---
+- `s.loc[1]` is `"a"`: the row whose **label** is 1.
+- `s.iloc[1]` is `"b"`: the row at **position** 1, which is the second row.
+- The lengths are `2` and `1`. The label slice `1:2` includes label 2; the position slice `1:2` contains only position 1.
+
+Plain `s[1]` would look up the label here, which is easy to misread. Writing `loc` or `iloc` every time removes the doubt.
+:::
+
+### 2.2 · Selecting from a DataFrame
+
+`loc` and `iloc` take the rows first and the columns second, separated by a comma, like a 2-D NumPy array.
+
+```python run
+import pandas as pd
+
+df = pd.DataFrame({
+    "major": ["DS", "CS", "DS", "AI"],
+    "year":  [2, 4, 1, 3],
+    "gpa":   [3.4, 2.1, 3.9, 3.2],
+}, index=["Ahmad", "Sara", "Omar", "Lina"])
+
+print(df.loc["Omar", "gpa"])                   # one cell
+print(df.loc[["Ahmad", "Lina"], ["major", "gpa"]])
+print(df.iloc[:2, :2])                         # first 2 rows, first 2 columns
+print(df.loc[:, "year"])                       # every row, one column
+```
+
+### 2.3 · Selecting rows with a mask
+
+Masks work as in NumPy. A comparison on a column gives a Series of `True` and `False`, and putting it in the brackets keeps the `True` rows.
+
+```python run
+import pandas as pd
+
+df = pd.DataFrame({
+    "major": ["DS", "CS", "DS", "AI"],
+    "year":  [2, 4, 1, 3],
+    "gpa":   [3.4, 2.1, 3.9, 3.2],
+}, index=["Ahmad", "Sara", "Omar", "Lina"])
+
+print(df[df["gpa"] > 3.3])
+print(df[(df["major"] == "DS") & (df["year"] >= 2)])
+print(df.loc[df["gpa"] > 3.3, "major"])        # a mask for the rows, a label for the column
+print(df[df["major"].isin(["CS", "AI"])])
+```
+
+The rules from last week still hold: `&`, `|` and `~`, with every condition in brackets.
+
+### 2.4 · Adding and changing columns
+
+```python run
+import pandas as pd
+
+df = pd.DataFrame({
+    "major": ["DS", "CS", "DS", "AI"],
+    "year":  [2, 4, 1, 3],
+    "gpa":   [3.4, 2.1, 3.9, 3.2],
+}, index=["Ahmad", "Sara", "Omar", "Lina"])
+
+df["percent"] = df["gpa"] / 4 * 100            # a new column from an old one
+df.loc[df["gpa"] < 2.5, "status"] = "probation"
+df.loc[df["gpa"] >= 2.5, "status"] = "good"
 df
 ```
 
-## 2 · Loading and the five-command inspection
+> **Look out.** To change values, do the row choice and the column choice in **one** `loc`, as above. The two-step form `df[df["gpa"] < 2.5]["status"] = "probation"` first builds a temporary table and then changes that temporary table, so `df` itself is not changed.
 
-Run these on **every** new dataset before doing anything else: `head`, `info`, `describe`, `isna().sum()`, `nunique`.
-
-```python run
-import pandas as pd
-students = pd.read_csv("data/students.csv")
-students.head()
-```
-
-```python run
-import pandas as pd
-students = pd.read_csv("data/students.csv")
-students.info()
-```
-
-`gpa` loaded as **object**, not float — a sign of dirty values. `describe()` summarises numeric columns; `describe(include="object")` the text ones.
-
-```python run
-import pandas as pd
-students = pd.read_csv("data/students.csv")
-print(students.describe().round(2))
-print()
-print(students.describe(include="object").T)
-print()
-print(students.isna().sum())
-print()
-print(students.nunique())
-```
-
-:::exercise id=ex1 title="Inspection report"
-Write `report(df)` that returns a dict with `rows`, `cols`, `missing` (a dict `column → count`, **only** columns with at least one missing value) and `object_cols` (a list of column names with dtype `object`).
+:::exercise id=p1 title="Top students in one major"
+Complete `top_in_major(df, major, minimum)` so that it returns the rows of `df` whose `major` equals `major` **and** whose `gpa` is at least `minimum`. Return only the columns `name` and `gpa`, in that order.
 
 ```python
 import pandas as pd
 
-def report(df):
-    return {
-        "rows": ...,
-        "cols": ...,
-        "missing": ...,
-        "object_cols": ...,
-    }
+def top_in_major(df, major, minimum):
+    return ...
 
-print(report(pd.read_csv("data/students.csv")))
+demo = pd.DataFrame({
+    "name":  ["Ahmad", "Sara", "Omar", "Lina"],
+    "major": ["DS", "CS", "DS", "AI"],
+    "gpa":   [3.4, 2.1, 3.9, 3.2],
+})
+print(top_in_major(demo, "DS", 3.5))
 ```
 
 ```python check
 import pandas as pd
-df = pd.read_csv("data/students.csv")
-r = report(df)
-assert r["rows"] == 205 and r["cols"] == 8, f"{r['rows']}x{r['cols']}"
-assert r["missing"] == {"gpa": int(df["gpa"].isna().sum())}, f"missing: {r['missing']}"
-assert set(r["object_cols"]) == {"name", "major", "city", "gpa", "email"}, f"object_cols: {r['object_cols']}"
+d = pd.DataFrame({"name": ["Ahmad", "Sara", "Omar", "Lina", "Rami"],
+                  "major": ["DS", "CS", "DS", "AI", "DS"],
+                  "gpa": [3.4, 2.1, 3.9, 3.2, 3.5]})
+r = top_in_major(d, "DS", 3.5)
+assert isinstance(r, pd.DataFrame), "return a DataFrame"
+assert list(r.columns) == ["name", "gpa"], f"columns should be name and gpa, got {list(r.columns)}"
+assert sorted(r["name"]) == ["Omar", "Rami"], f"expected Omar and Rami (3.5 counts), got {sorted(r['name'])}"
+assert len(top_in_major(d, "AI", 3.0)) == 1 and len(top_in_major(d, "CS", 3.0)) == 0
 ```
 :::
 
-## 3 · Selecting data
+**Read more:** [Data Indexing and Selection](https://jakevdp.github.io/PythonDataScienceHandbook/03.02-data-indexing-and-selection.html)
 
-| Want | Use |
+## 3 · Operating on data
+
+### 3.1 · NumPy functions keep the labels
+
+Everything from last week still works. The result of an operation keeps the index and the column names.
+
+```python run
+import numpy as np
+import pandas as pd
+
+marks = pd.DataFrame({"midterm": [70, 55, 90], "final": [80, 65, 70]},
+                     index=["Ahmad", "Sara", "Omar"])
+
+print(marks * 1.05)                 # every value
+print(np.sqrt(marks).round(2))      # a NumPy function, labels kept
+print(marks["midterm"] * 0.4 + marks["final"] * 0.6)
+print(marks.mean())                 # per column
+print(marks.mean(axis=1))           # per row
+```
+
+### 3.2 · Index alignment
+
+When two Series are combined, Pandas matches the values by **label**, not by position. A label that appears on only one side has no partner, and the result for it is `NaN`, which means "missing".
+
+![Two columns of quiz marks with partly different student names are added. Names found in both get a sum. Names found in only one get NaN.](figures/alignment.svg)
+
+<p class="caption">Sara and Omar appear in both, so their marks are added. Ahmad and Lina each appear in one only, so their results are missing.</p>
+
+```python run
+import pandas as pd
+
+quiz1 = pd.Series({"Ahmad": 8, "Sara": 6, "Omar": 9})
+quiz2 = pd.Series({"Sara": 7, "Omar": 10, "Lina": 5})
+
+print(quiz1 + quiz2)
+```
+
+This protects you from adding values that belong to different students merely because they sit on the same row. When a missing partner should count as zero, use the method form and say so.
+
+```python run
+import pandas as pd
+
+quiz1 = pd.Series({"Ahmad": 8, "Sara": 6, "Omar": 9})
+quiz2 = pd.Series({"Sara": 7, "Omar": 10, "Lina": 5})
+
+print(quiz1.add(quiz2, fill_value=0))
+```
+
+| Operator | Method with the same meaning |
 |---|---|
-| one column | `df["col"]` |
-| several columns | `df[["a", "b"]]` |
-| rows by **label** (and columns) | `df.loc[rows, cols]` |
-| rows by **position** | `df.iloc[rows, cols]` |
-| rows by condition | `df[mask]` or `df.loc[mask, cols]` |
-| SQL-style string filter | `df.query("gpa > 3 and year == 4")` |
+| `+` | `add()` |
+| `-` | `sub()` |
+| `*` | `mul()` |
+| `/` | `div()` |
 
-```python run
-import pandas as pd
-students = pd.read_csv("data/students.csv")
+> **Look out.** The order of the rows does not matter to Pandas, only the labels. Two Series with the same values in the same order but **different labels** give a result that is entirely `NaN`. If you see that, compare the two indexes first.
 
-print(students.loc[0, "name"], "|", students.iloc[0, 1])    # same cell, label vs position
-print(students.iloc[2:5, :3])
-
-seniors_amman = students[(students["year"] == 4) & (students["city"] == "Amman")]
-print(len(seniors_amman), "rows")
-print(students.query("year == 4 and city == 'Amman'").equals(seniors_amman))
-seniors_amman[["name", "major", "gpa"]].head()
-```
-
-:::exercise id=ex2 title="Filter and project"
-Return a DataFrame with columns `name, major` for students in **year 1 or 2** whose `city` is `Irbid` or `Zarqa`, sorted by name. Hint: `.isin()`.
+:::exercise id=p2 title="Total points, with absences as zero"
+`a` and `b` are Series of points indexed by student name. Some students are missing from one of them. Complete `total_points(a, b)` so that it returns the total for **every** student, counting a missing mark as 0.
 
 ```python
 import pandas as pd
 
-def juniors_north(df):
-    mask = ...
-    return df.loc[mask, ["name", "major"]].sort_values("name")
+def total_points(a, b):
+    return ...
 
-students = pd.read_csv("data/students.csv")
-juniors_north(students)
+q1 = pd.Series({"Ahmad": 8, "Sara": 6, "Omar": 9})
+q2 = pd.Series({"Sara": 7, "Omar": 10, "Lina": 5})
+print(total_points(q1, q2))
 ```
 
 ```python check
 import pandas as pd
-df = pd.read_csv("data/students.csv")
-r = juniors_north(df)
-assert list(r.columns) == ["name", "major"], f"columns {list(r.columns)}"
-assert set(df.loc[r.index, "year"]) <= {1, 2}, "years must be 1 or 2"
-assert set(df.loc[r.index, "city"]) <= {"Irbid", "Zarqa"}, "cities must be Irbid or Zarqa"
-expected = df[df["year"].isin([1, 2]) & df["city"].isin(["Irbid", "Zarqa"])]
-assert len(r) == len(expected), f"{len(r)} rows, expected {len(expected)}"
-assert r["name"].is_monotonic_increasing, "sort by name"
+q1 = pd.Series({"Ahmad": 8, "Sara": 6, "Omar": 9})
+q2 = pd.Series({"Sara": 7, "Omar": 10, "Lina": 5})
+r = total_points(q1, q2)
+assert isinstance(r, pd.Series), "return a Series"
+assert not r.isna().any(), "no total should be missing: a missing mark counts as 0"
+assert r.to_dict() == {"Ahmad": 8, "Lina": 5, "Omar": 19, "Sara": 13}, f"wrong totals: {r.to_dict()}"
 ```
 :::
 
-## 4 · Cleaning
+**Read more:** [Operating on Data in Pandas](https://jakevdp.github.io/PythonDataScienceHandbook/03.03-operations-in-pandas.html)
 
-`students.csv` was deliberately dirtied: `unknown` and blank GPAs, stray whitespace in `major`, upper-case cities, and five duplicate rows. This is the normal state of real data.
+## 4 · Handling missing data
+
+### 4.1 · How missing values behave
+
+Real tables have holes. Pandas marks a missing number as `NaN`. Arithmetic with `NaN` gives `NaN`, but Pandas' own summaries **skip** missing values by default.
+
+```python run
+import numpy as np
+import pandas as pd
+
+s = pd.Series([3.4, np.nan, 3.9, None])     # None also becomes NaN
+print(s)
+print(s + 1)             # missing stays missing
+print(s.sum(), s.mean()) # summaries skip the missing values
+print(s.count(), "known values out of", len(s))
+```
+
+> **Look out.** `NaN` is not equal to anything, including itself, so `s == np.nan` is `False` everywhere and finds nothing. Use `isna()`.
+
+### 4.2 · Finding them
+
+```python run
+import numpy as np
+import pandas as pd
+
+s = pd.Series([3.4, np.nan, 3.9, np.nan], index=["Ahmad", "Sara", "Omar", "Lina"])
+print(s.isna())
+print(s[s.notna()])
+print("missing:", s.isna().sum())
+```
+
+### 4.3 · Dropping them
+
+```python run
+import numpy as np
+import pandas as pd
+
+df = pd.DataFrame({
+    "name": ["Ahmad", "Sara", "Omar", "Lina"],
+    "gpa":  [3.4, np.nan, 3.9, 3.2],
+    "city": ["Amman", "Irbid", None, "Zarqa"],
+})
+
+print(df.dropna())                     # drop every row that has any hole
+print(df.dropna(subset=["gpa"]))       # only rows whose gpa is missing
+print(df.dropna(axis=1))               # drop COLUMNS that have a hole
+```
+
+### 4.4 · Filling them
+
+```python run
+import numpy as np
+import pandas as pd
+
+s = pd.Series([3.4, np.nan, 3.9, np.nan, 2.8])
+
+print(s.fillna(0).tolist())                    # a fixed value
+print(s.fillna(s.mean()).round(2).tolist())    # the mean of the known values
+print(s.ffill().tolist())                      # carry the previous value forward
+print(s.bfill().tolist())                      # use the next value
+```
+
+Which is right depends on what the hole means. Filling a GPA with 0 would badly distort the average. Carrying the last value forward suits a reading that changes slowly over time and makes no sense for a list of unrelated students. Dropping rows is the honest choice when few are missing and nothing suggests a pattern. Whatever you choose, **say what you did and why** in your project report.
+
+### 4.5 · A real case: the GPA column
+
+In Section 1.3 the `gpa` column was read as text. Here is why, and the fix.
 
 ```python run
 import pandas as pd
-students = pd.read_csv("data/students.csv")
-print(students["major"].unique())
-print(students["city"].unique())
-print("duplicates:", students.duplicated().sum())
-print("non-numeric gpa tokens:", students.loc[pd.to_numeric(students["gpa"], errors="coerce").isna(), "gpa"].unique())
-```
 
-The `.str` accessor applies string methods to a whole column; `pd.to_numeric(errors="coerce")` turns anything unparseable into `NaN`.
-
-```python run
-import pandas as pd
 students = pd.read_csv("data/students.csv")
 
-clean = students.copy()
-clean["major"] = clean["major"].str.strip()
-clean["city"]  = clean["city"].str.title()
-clean["gpa"]   = pd.to_numeric(clean["gpa"], errors="coerce")
-clean = clean.drop_duplicates().reset_index(drop=True)
+as_number = pd.to_numeric(students["gpa"], errors="coerce")   # anything unreadable becomes NaN
+bad = students.loc[as_number.isna(), "gpa"]
+print(bad.value_counts(dropna=False))                         # what was in those cells
 
-print(clean["major"].unique(), clean["city"].unique())
-print(clean.dtypes["gpa"], "| rows:", len(students), "→", len(clean))
+students["gpa"] = as_number
+print(students["gpa"].dtype, "| missing:", students["gpa"].isna().sum())
+print("mean GPA:", students["gpa"].mean().round(3))
 ```
 
-The same cleaning as one chained expression — the style you will see in production code. `assign` with a `lambda` lets each step refer to the frame as it is *at that point* in the chain.
+A few cells held the word `unknown` and a few were empty. One piece of text is enough to turn a whole column into text. `errors="coerce"` converts what it can and marks the rest as missing.
 
-```python run
-import pandas as pd
-students = pd.read_csv("data/students.csv")
+:::challenge title="Which number is it?"
+A column of five marks is `[80, NaN, 60, NaN, 70]`. Without running anything, what are `s.mean()`, `s.fillna(0).mean()` and `len(s.dropna())`?
+---
+- `s.mean()` is **70**. Missing values are skipped: (80 + 60 + 70) / 3.
+- `s.fillna(0).mean()` is **42**. Now the two zeros count: 210 / 5.
+- `len(s.dropna())` is **3**.
 
-clean = (students
-         .assign(major=lambda d: d["major"].str.strip(),
-                 city=lambda d: d["city"].str.title(),
-                 gpa=lambda d: pd.to_numeric(d["gpa"], errors="coerce"))
-         .drop_duplicates()
-         .reset_index(drop=True))
-clean.head()
-```
+The gap between 70 and 42 is why "fill with 0" must be a deliberate decision. It is right when missing truly means zero (an exam that was not sat) and wrong when it means "not recorded".
+:::
 
-:::exercise id=ex3 title="Audit before you clean"
-`audit(raw)` takes the **raw** frame and returns a dict: `duplicates` (count of duplicate rows), `bad_gpa` (count of non-numeric, non-blank GPA tokens), `blank_gpa` (count of missing GPAs), `untrimmed_major` (rows whose major has leading/trailing spaces), `upper_city` (rows whose city is entirely upper-case). Return plain `int`s.
+:::exercise id=p3 title="Clean the GPA column"
+Complete `clean_gpa(df)` so that it returns a copy of `df` in which the `gpa` column is numeric, and every value that was missing or unreadable is replaced by the **median** of the valid GPAs.
 
 ```python
 import pandas as pd
 
-def audit(raw):
-    gpa_num = pd.to_numeric(raw["gpa"], errors="coerce")
-    blank = raw["gpa"].isna()
-    return {
-        "duplicates": int(raw.duplicated().sum()),
-        "bad_gpa": ...,
-        "blank_gpa": ...,
-        "untrimmed_major": ...,
-        "upper_city": ...,
-    }
-
-print(audit(pd.read_csv("data/students.csv")))
-```
-
-```python check
-import pandas as pd
-a = audit(pd.read_csv("data/students.csv"))
-assert set(a) == {"duplicates", "bad_gpa", "blank_gpa", "untrimmed_major", "upper_city"}
-assert a["duplicates"] == 5, a
-assert a["bad_gpa"] == 3, f"bad_gpa {a['bad_gpa']} (expected 3: the 'unknown' tokens)"
-assert a["blank_gpa"] == 8, f"blank_gpa {a['blank_gpa']}"
-assert a["untrimmed_major"] == 6, f"untrimmed_major {a['untrimmed_major']}"
-assert a["upper_city"] == 3, f"upper_city {a['upper_city']}"
-assert all(isinstance(v, int) for v in a.values()), "return plain ints"
-```
-:::
-
-## 5 · Missing values
-
-`NaN` propagates through arithmetic and is **skipped** by aggregations. Decide column by column whether to drop, fill, or flag — and write down why.
-
-```python run
-import pandas as pd
-clean = (pd.read_csv("data/students.csv")
-           .assign(major=lambda d: d["major"].str.strip(),
-                   gpa=lambda d: pd.to_numeric(d["gpa"], errors="coerce"))
-           .drop_duplicates().reset_index(drop=True))
-
-print(clean["gpa"].isna().sum(), "missing GPAs;  mean skips them:", clean["gpa"].mean().round(3))
-
-dropped  = clean.dropna(subset=["gpa"])                                        # 1. drop rows
-filled   = clean.fillna({"gpa": clean["gpa"].median()})                        # 2. fill with a statistic
-by_major = clean["gpa"].fillna(clean.groupby("major")["gpa"].transform("median"))  # 3. group-wise fill
-flagged  = clean.assign(gpa_missing=clean["gpa"].isna())                       # 4. keep the information
-
-print(len(dropped), filled["gpa"].isna().sum(), by_major.isna().sum(), flagged["gpa_missing"].sum())
-```
-
-:::exercise id=ex4 title="Group-wise imputation"
-`fill_gpa_by_major(df)` returns a **copy** in which missing GPAs are replaced by the **median GPA of the same major**. No other column may change, and the input must not be modified.
-
-```python
-import pandas as pd
-
-def fill_gpa_by_major(df):
+def clean_gpa(df):
     out = df.copy()
     ...
     return out
 
-clean = (pd.read_csv("data/students.csv")
-           .assign(major=lambda d: d["major"].str.strip(),
-                   gpa=lambda d: pd.to_numeric(d["gpa"], errors="coerce"))
-           .drop_duplicates().reset_index(drop=True))
-print(fill_gpa_by_major(clean)["gpa"].isna().sum())
+demo = pd.DataFrame({"name": ["a", "b", "c", "d"], "gpa": ["3.0", "unknown", "2.0", None]})
+print(clean_gpa(demo))
 ```
 
 ```python check
 import pandas as pd
-clean = (pd.read_csv("data/students.csv")
-           .assign(major=lambda d: d["major"].str.strip(),
-                   gpa=lambda d: pd.to_numeric(d["gpa"], errors="coerce"))
-           .drop_duplicates().reset_index(drop=True))
-f = fill_gpa_by_major(clean)
-assert clean["gpa"].isna().sum() > 0, "input was modified"
-assert f["gpa"].isna().sum() == 0, "all GPAs should be filled"
-m = clean["gpa"].isna()
-for major in clean.loc[m, "major"].unique():
-    med = clean.loc[clean["major"] == major, "gpa"].median()
-    assert (f.loc[m & (clean["major"] == major), "gpa"] == med).all(), f"wrong fill value for {major}"
-assert f.drop(columns="gpa").equals(clean.drop(columns="gpa")), "other columns must be unchanged"
+d = pd.DataFrame({"name": list("abcde"), "gpa": ["3.0", "unknown", "2.0", None, "4.0"]})
+r = clean_gpa(d)
+assert isinstance(r, pd.DataFrame) and len(r) == 5, "return a DataFrame with the same rows"
+assert pd.api.types.is_numeric_dtype(r["gpa"]), "the gpa column must be numeric"
+assert not r["gpa"].isna().any(), "no GPA may be missing in the result"
+assert r["gpa"].tolist() == [3.0, 3.0, 2.0, 3.0, 4.0], f"missing values should become the median, 3.0: {r['gpa'].tolist()}"
+assert d["gpa"].tolist()[1] == "unknown", "do not change the original table"
 ```
 :::
 
-## 6 · New columns and accessors
+**Read more:** [Handling Missing Data](https://jakevdp.github.io/PythonDataScienceHandbook/03.04-missing-values.html)
 
-Prefer vectorised arithmetic. Use `map` for value lookups, `pd.cut` for binning, `.str` for text, and `apply(axis=1)` only for row logic you cannot vectorise.
+## 5 · Working with text columns
+
+The textbook treats text later in the chapter. It is placed here because cleaning text is part of this week's work.
+
+### 5.1 · The `.str` accessor
+
+A text column has a `.str` attribute that applies Python's string methods to **every value at once**, and skips missing values instead of failing on them.
 
 ```python run
 import pandas as pd
-clean = (pd.read_csv("data/students.csv")
-           .assign(major=lambda d: d["major"].str.strip(),
-                   gpa=lambda d: pd.to_numeric(d["gpa"], errors="coerce"))
-           .drop_duplicates().reset_index(drop=True))
 
-clean["gpa_pct"]    = clean["gpa"] / 4 * 100
-clean["standing"]   = pd.cut(clean["gpa"], bins=[0, 2, 3.5, 4], labels=["probation", "good", "honours"])
-clean["major_code"] = clean["major"].map({"Data Science": "DS", "Computer Science": "CS",
-                                          "Cybersecurity": "CY", "AI": "AI", "Software Eng": "SE"})
-clean["first_name"] = clean["name"].str.split().str[0]
-clean["domain"]     = clean["email"].str.extract(r"@(.+)$")
-clean["load"]       = clean.apply(lambda r: "heavy" if r["credits"] / max(r["year"], 1) > 30 else "normal", axis=1)
+names = pd.Series(["  ahmad ODEH", "Sara nasser ", None, "OMAR zaid"])
 
-print(clean["standing"].value_counts(dropna=False))
-clean[["name", "major_code", "gpa", "standing", "first_name", "domain", "load"]].head()
+print(names.str.strip().str.title())
+print(names.str.len())
+print(names.str.lower().str.contains("sa"))
+print(names.str.strip().str.split().str[0])     # the first word of each
 ```
 
-:::exercise id=ex5 title="Derived columns"
-Add two columns and return the frame: `progress` = `credits / 132 × 100` rounded to one decimal, and `band` = `pd.cut` of GPA into `C` for `[0, 2)`, `B` for `[2, 3)`, `A` for `[3, 4]` — use `right=False` and make sure a GPA of exactly 4.0 lands in `A`.
+| Purpose | Methods |
+|---|---|
+| Change case | `str.lower()`, `str.upper()`, `str.title()` |
+| Remove spaces at the ends | `str.strip()` |
+| Test the content | `str.contains()`, `str.startswith()`, `str.endswith()` |
+| Replace part of the text | `str.replace()` |
+| Cut into pieces | `str.split()`, then `str[0]`, `str[1]`, … |
+| Measure | `str.len()` |
+
+### 5.2 · A real case: inconsistent categories
+
+Counting the distinct values of a text column is the quickest way to find spelling problems.
+
+```python run
+import pandas as pd
+
+students = pd.read_csv("data/students.csv")
+
+print(students["city"].value_counts())
+print(students["major"].unique())
+```
+
+`AMMAN` and `Amman` are counted as different cities, and one major has stray spaces around it. To Pandas these are different values, so every later count and group would be wrong.
+
+```python run
+import pandas as pd
+
+students = pd.read_csv("data/students.csv")
+
+students["city"] = students["city"].str.title()
+students["major"] = students["major"].str.strip()
+
+print(students["city"].value_counts())
+print(students["major"].nunique(), "majors")
+
+students["domain"] = students["email"].str.split("@").str[1]
+print(students["domain"].value_counts())
+```
+
+:::exercise id=p4 title="Tidy two text columns"
+Complete `tidy(df)` so that it returns a copy of `df` in which `major` has no spaces at either end and `city` has a capital first letter with the rest in lower case (`AMMAN` and `amman` both become `Amman`).
 
 ```python
 import pandas as pd
 
-def derive(df):
-    return df.assign(
-        progress=...,
-        band=pd.cut(df["gpa"], bins=[...], labels=["C", "B", "A"], right=False),
-    )
+def tidy(df):
+    out = df.copy()
+    ...
+    return out
 
-clean = pd.read_csv("data/students.csv").assign(gpa=lambda d: pd.to_numeric(d["gpa"], errors="coerce"))
-print(derive(clean)["band"].value_counts())
+demo = pd.DataFrame({"major": [" AI ", "AI"], "city": ["AMMAN", "amman"]})
+print(tidy(demo))
 ```
 
 ```python check
 import pandas as pd
-clean = pd.read_csv("data/students.csv").assign(gpa=lambda d: pd.to_numeric(d["gpa"], errors="coerce"))
-d = derive(clean)
-assert "progress" in d and "band" in d
-assert abs(d.loc[0, "progress"] - round(clean.loc[0, "credits"] / 132 * 100, 1)) < 1e-9, "progress formula"
-assert d.loc[d["gpa"] == 4.0, "band"].astype(str).eq("A").all(), "GPA 4.0 must be band A"
-assert d.loc[d["gpa"] < 2.0, "band"].astype(str).eq("C").all(), "GPA < 2 must be band C"
-assert d.loc[(d["gpa"] >= 2.0) & (d["gpa"] < 3.0), "band"].astype(str).eq("B").all(), "[2,3) must be band B"
+d = pd.DataFrame({"major": [" AI ", "AI", "Data Science  "], "city": ["AMMAN", "amman", "Irbid"]})
+r = tidy(d)
+assert isinstance(r, pd.DataFrame), "return a DataFrame"
+assert r["major"].tolist() == ["AI", "AI", "Data Science"], f"majors not stripped: {r['major'].tolist()}"
+assert r["city"].tolist() == ["Amman", "Amman", "Irbid"], f"cities not tidied: {r['city'].tolist()}"
+assert d["city"].tolist()[0] == "AMMAN", "do not change the original table"
 ```
 :::
 
+**Read more:** [Vectorized String Operations](https://jakevdp.github.io/PythonDataScienceHandbook/03.10-working-with-strings.html)
+
+## 6 · Hierarchical indexing
+
+### 6.1 · Two labels per row
+
+Sometimes one label is not enough to identify a row. A grade belongs to a **student** in a **course**. Pandas can use both as the index, one level inside the other. This is called a hierarchical index, or `MultiIndex`.
+
+```python run
+import pandas as pd
+
+grades = pd.DataFrame({
+    "student": ["Ahmad", "Ahmad", "Sara", "Sara", "Omar", "Omar"],
+    "course":  ["ML", "OOP", "ML", "OOP", "ML", "OOP"],
+    "grade":   [89, 51, 74, 80, 92, 67],
+})
+
+by_both = grades.set_index(["student", "course"])["grade"]
+print(by_both)
+```
+
+### 6.2 · Selecting with two levels
+
+```python run
+import pandas as pd
+
+grades = pd.DataFrame({
+    "student": ["Ahmad", "Ahmad", "Sara", "Sara", "Omar", "Omar"],
+    "course":  ["ML", "OOP", "ML", "OOP", "ML", "OOP"],
+    "grade":   [89, 51, 74, 80, 92, 67],
+})
+by_both = grades.set_index(["student", "course"])["grade"]
+
+print(by_both.loc["Sara"])               # everything for one student
+print(by_both.loc[("Sara", "OOP")])      # one student in one course
+print(by_both.loc[:, "ML"])              # one course, every student
+```
+
+### 6.3 · Long and wide: `unstack` and `stack`
+
+The same data can be laid out **long** (one row per student and course) or **wide** (one row per student, one column per course). `unstack` moves the inner level of the index into the columns, and `stack` moves it back.
+
+```python run
+import pandas as pd
+
+grades = pd.DataFrame({
+    "student": ["Ahmad", "Ahmad", "Sara", "Sara", "Omar", "Omar"],
+    "course":  ["ML", "OOP", "ML", "OOP", "ML", "OOP"],
+    "grade":   [89, 51, 74, 80, 92, 67],
+})
+by_both = grades.set_index(["student", "course"])["grade"]
+
+wide = by_both.unstack()
+print(wide)
+print(wide.stack().head(3))
+print(by_both.reset_index().head(3))     # back to ordinary columns
+```
+
+You will meet a `MultiIndex` most often as the **result** of grouping by two columns, which is next week's topic. `reset_index()` always turns it back into ordinary columns.
+
+> **Good to know.** Older tutorials mention a three-dimensional Pandas object called `Panel`. It was removed from Pandas in 2019. A DataFrame with a hierarchical index does the same job and is what you should use.
+
+**Read more:** [Hierarchical Indexing](https://jakevdp.github.io/PythonDataScienceHandbook/03.05-hierarchical-indexing.html)
+
 ## Summary
 
-* Five commands on every dataset: `head`, `info`, `describe`, `isna().sum()`, `nunique`.
-* `[]` for columns, `.loc` for labels, `.iloc` for positions, masks for conditions.
-* Clean with `.str`, `pd.to_numeric(errors="coerce")`, `drop_duplicates()` — ideally as one `assign` chain.
-* Missing values: drop, fill, group-fill, or flag — and justify the choice.
-
-Next: *Pandas II* — groupby, merge, pivot and time series.
+- A **Series** is values plus an index of labels. A **DataFrame** is several Series sharing one index.
+- Use `loc` for labels and `iloc` for positions. A label slice includes its end; a position slice does not.
+- Select rows with a mask; change values with a single `df.loc[rows, column] = value`.
+- Operations match values by **label**. Labels found on one side only give `NaN`.
+- Find missing values with `isna()`; choose between `dropna()` and `fillna()` deliberately, and report the choice.
+- `pd.to_numeric(..., errors="coerce")` rescues a numeric column that was read as text.
+- `.str` cleans a whole text column at once. Check categories with `value_counts()`.
+- Two index levels describe data with two keys; `unstack` and `stack` switch between long and wide.
