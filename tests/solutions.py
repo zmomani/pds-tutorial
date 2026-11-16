@@ -327,4 +327,20 @@ def evaluate(model, X, y):
             "rmse": round(root_mean_squared_error(y_test, p), 2),
             "r2": round(r2_score(y_test, p), 2)}
 """,
+
+"sample-textbook/a1": """
+import numpy as np
+
+def row_shares(x):
+    totals = x.sum(axis=1, keepdims=True)
+    return x / totals
+""",
+
+"sample-textbook/b1": """
+import pandas as pd
+
+def above_major_mean(df):
+    major_mean = df.groupby("major")["gpa"].transform("mean")
+    return df[df["gpa"] > major_mean]
+""",
 }

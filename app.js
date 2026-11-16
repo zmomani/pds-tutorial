@@ -16,6 +16,7 @@
     loadedPkgs: new Set(),
     mountedData: new Set(),
     running: false,
+    glossary: {},          // identifier -> helper note shown on hover
   };
 
   const $ = (sel) => document.querySelector(sel);
@@ -256,9 +257,8 @@ builtins.input = input
       return `\n<div data-exercise="${id}"></div>\n`;
     });
 
-    // 2. render markdown with runnable code blocks
+    // 2. renderer: fenced code gets highlighting, and a Try-it button when marked "run"
     const renderer = new marked.Renderer();
-    const baseCode = renderer.code.bind(renderer);
     renderer.code = function (codeObj, infoString) {
       const text = typeof codeObj === "object" ? codeObj.text : codeObj;
       const info = typeof codeObj === "object" ? (codeObj.lang || "") : (infoString || "");
@@ -268,8 +268,19 @@ builtins.input = input
       const pre = `<pre><code class="hljs language-${lang}">${hl}</code></pre>`;
       return runnable ? `<div class="runnable"><button class="try" data-code="${escapeAttr(text)}">▶ Try it</button>${pre}</div>` : pre;
     };
-    const html = marked.parse(md, { renderer, gfm: true, breaks: false });
-    return { html, exercises };
+    const render = (src) => marked.parse(src, { renderer, gfm: true, breaks: false });
+
+    // 3. pull out :::challenge blocks (a question, then "---", then the hidden answer)
+    const challenges = [];
+    md = md.replace(/^:::challenge[ \t]*([^\n]*)\n([\s\S]*?)^:::\s*$/gm, (_, header, body) => {
+      const title = (header.match(/title="([^"]*)"/) || [])[1] || "Mini challenge";
+      const parts = body.split(/^---\s*$/m);
+      challenges.push({ title, qHtml: render(parts[0].trim()), aHtml: render(parts.slice(1).join("\n---\n").trim()) });
+      return `\n<div data-challenge="${challenges.length - 1}"></div>\n`;
+    });
+
+    const html = render(md);
+    return { html, exercises, challenges };
   }
 
   function buildExerciseCard(ex, lessonId) {
@@ -291,6 +302,81 @@ builtins.input = input
     ex.el = wrap;
     return wrap;
   }
+
+  function buildChallengeCard(ch) {
+    const wrap = document.createElement("div");
+    wrap.className = "challenge";
+    wrap.innerHTML = `
+      <div class="challenge-head"><span class="challenge-badge">think first</span><span class="challenge-title"></span></div>
+      <div class="challenge-body">${ch.qHtml}
+        ${ch.aHtml ? `<button class="btn ghost reveal" aria-expanded="false">Show answer</button><div class="challenge-answer hidden">${ch.aHtml}</div>` : ""}
+      </div>`;
+    wrap.querySelector(".challenge-title").textContent = ch.title;
+    const btn = wrap.querySelector(".reveal");
+    if (btn) btn.addEventListener("click", () => {
+      const hidden = wrap.querySelector(".challenge-answer").classList.toggle("hidden");
+      btn.textContent = hidden ? "Show answer" : "Hide answer";
+      btn.setAttribute("aria-expanded", String(!hidden));
+    });
+    return wrap;
+  }
+
+  // ---------------------------------------------------------------- helper notes on code keywords
+  // Identifiers listed in lessons/glossary.json get a dotted underline in lesson code;
+  // hovering (or focusing, or tapping) one shows a short note. A key that starts with "."
+  // applies only to a method or attribute, e.g. ".sum" matches scores.sum() but not sum(x).
+  function annotateCode(root) {
+    const G = S.glossary;
+    if (!G || !Object.keys(G).length) return;
+    root.querySelectorAll("pre code.language-python").forEach((code) => {
+      const walker = document.createTreeWalker(code, NodeFilter.SHOW_TEXT);
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      for (const node of nodes) {
+        if (node.parentElement.closest(".hljs-comment, .hljs-string, .tip")) continue;
+        const text = node.nodeValue;
+        const prev = node.previousSibling ? node.previousSibling.textContent : "";
+        const re = /[A-Za-z_]\w*/g;
+        let m, last = 0, frag = null;
+        while ((m = re.exec(text))) {
+          const before = m.index > 0 ? text[m.index - 1] : prev.slice(-1);
+          const key = before === "." && G["." + m[0]] ? "." + m[0] : (before !== "." && G[m[0]] ? m[0] : null);
+          if (!key) continue;
+          frag = frag || document.createDocumentFragment();
+          frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+          const span = document.createElement("span");
+          span.className = "tip"; span.tabIndex = 0; span.dataset.tip = key; span.textContent = m[0];
+          frag.appendChild(span);
+          last = m.index + m[0].length;
+        }
+        if (frag) { frag.appendChild(document.createTextNode(text.slice(last))); node.replaceWith(frag); }
+      }
+    });
+  }
+
+  const tipBox = document.createElement("div");
+  tipBox.className = "tipbox hidden"; tipBox.setAttribute("role", "tooltip");
+  document.body.appendChild(tipBox);
+  function showTip(target) {
+    const key = target.dataset.tip, note = S.glossary[key];
+    if (!note) return;
+    tipBox.innerHTML = "";
+    const head = document.createElement("code"); head.textContent = key.replace(/^\./, "");
+    const body = document.createElement("span"); body.textContent = note;
+    tipBox.append(head, body);
+    tipBox.classList.remove("hidden");
+    const r = target.getBoundingClientRect(), b = tipBox.getBoundingClientRect();
+    const left = Math.max(8, Math.min(r.left, window.innerWidth - b.width - 8));
+    const top = r.top - b.height - 8 >= 8 ? r.top - b.height - 8 : r.bottom + 8;
+    tipBox.style.left = left + "px"; tipBox.style.top = top + "px";
+  }
+  const hideTip = () => tipBox.classList.add("hidden");
+  el.content.addEventListener("mouseover", (e) => { const t = e.target.closest(".tip"); if (t) showTip(t); });
+  el.content.addEventListener("mouseout", (e) => { if (e.target.closest(".tip")) hideTip(); });
+  el.content.addEventListener("focusin", (e) => { const t = e.target.closest(".tip"); if (t) showTip(t); });
+  el.content.addEventListener("focusout", hideTip);
+  el.content.addEventListener("scroll", hideTip, { passive: true });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideTip(); });
 
   function loadIntoEditor(item) {
     S.current = item;
@@ -337,13 +423,20 @@ builtins.input = input
 
     el.content.innerHTML = `<p class="muted">Loading lesson…</p>`;
     const md = await (await fetch("lessons/" + lesson.file)).text();
-    const { html, exercises } = parseLesson(md);
+    const { html, exercises, challenges } = parseLesson(md);
     el.content.innerHTML = html;
     exercises.forEach((ex) => {
       S.exercises[ex.id] = ex;
       const ph = el.content.querySelector(`[data-exercise="${ex.id}"]`);
       if (ph) ph.replaceWith(buildExerciseCard(ex, lesson.id));
     });
+
+    challenges.forEach((ch, n) => {
+      const ph = el.content.querySelector(`[data-challenge="${n}"]`);
+      if (ph) ph.replaceWith(buildChallengeCard(ch));
+    });
+    annotateCode(el.content);
+    hideTip();
 
     // prev / next footer
     const i = S.manifest.indexOf(lesson);
@@ -362,6 +455,7 @@ builtins.input = input
     const first = el.content.querySelector(".runnable .try");
     if (first) loadIntoEditor({ kind: "example", code: first.dataset.code });
     else editor.setValue("# Write Python here and press Ctrl+Enter\n");
+    editor.refresh();   // the editor was laid out while hidden; re-measure the line-number gutter
 
     el.content.scrollTop = 0;
     if (anchor) { const t = el.content.querySelector("#ex-" + anchor); if (t) t.scrollIntoView({ behavior: "smooth", block: "start" }); }
@@ -402,6 +496,7 @@ builtins.input = input
   // ---------------------------------------------------------------- boot
   (async () => {
     S.manifest = await (await fetch("lessons/manifest.json")).json();
+    try { S.glossary = await (await fetch("lessons/glossary.json")).json(); } catch { S.glossary = {}; }
     el.select.innerHTML = `<option value="">Lessons…</option>` + S.manifest.map((l) => `<option value="${l.id}">${l.week} · ${l.title}</option>`).join("");
     route();
     ensurePython().catch(() => {});

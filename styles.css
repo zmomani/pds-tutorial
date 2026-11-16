@@ -142,3 +142,23 @@ kbd { font-family: var(--mono); font-size: .8em; background: #eef1f5; border: 1p
   .workbench { height: 70vh; }
   .status { display: none; }
 }
+
+/* ---------- figures ---------- */
+.lesson-content img { display: block; max-width: min(100%, 640px); height: auto; margin: 1rem 0 .3rem; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.lesson-content .caption { font-size: .88rem; color: var(--ink-2); margin: 0 0 1rem; }
+
+/* ---------- helper notes on code keywords ---------- */
+.tip { border-bottom: 1.5px dotted #7f95b3; cursor: help; border-radius: 2px; }
+.tip:hover, .tip:focus { background: #dbe7f5; outline: none; }
+.tipbox { position: fixed; z-index: 50; max-width: 340px; padding: .5rem .7rem; background: var(--navy-deep); color: #eef3f9; font-size: .84rem; line-height: 1.45; border-radius: 8px; box-shadow: 0 8px 24px rgba(21,41,63,.28); pointer-events: none; }
+.tipbox code { display: block; font-family: var(--mono); font-size: .82rem; color: #ffd08a; margin-bottom: .2rem; }
+
+/* ---------- mini challenge card ---------- */
+.challenge { margin: 1.2rem 0; border: 1px solid #c3d3e8; border-radius: 10px; background: #f6f9fd; overflow: hidden; }
+.challenge-head { display: flex; align-items: center; gap: .6rem; padding: .55rem .9rem; background: #e7eef8; border-bottom: 1px solid #d3deee; }
+.challenge-badge { font-family: var(--mono); font-size: .72rem; font-weight: 700; color: #fff; background: var(--navy); padding: 2px 7px; border-radius: 4px; }
+.challenge-title { font-weight: 600; }
+.challenge-body { padding: .6rem .9rem .8rem; }
+.challenge-body p { margin: .3rem 0 .6rem; }
+.challenge .reveal { font-size: .82rem; padding: .3rem .7rem; }
+.challenge-answer { margin-top: .6rem; padding-top: .6rem; border-top: 1px dashed #c3d3e8; }

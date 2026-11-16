@@ -149,5 +149,21 @@
    "ex2",
    "ex3"
   ]
+ },
+ {
+  "id": "sample-textbook",
+  "week": "Sample",
+  "title": "Sample — Textbook-based Sections (Broadcasting, GroupBy)",
+  "blurb": "Preview of the textbook-based format for Weeks 3–5: runnable examples, diagrams, hover notes on code, mini challenges.",
+  "file": "sample-textbook.md",
+  "packages": [
+   "numpy",
+   "pandas"
+  ],
+  "data": [],
+  "exercises": [
+   "a1",
+   "b1"
+  ]
  }
 ]

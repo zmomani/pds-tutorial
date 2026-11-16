@@ -18,6 +18,7 @@ browser* (via [Pyodide](https://pyodide.org)), so students need nothing but a li
 | 05 | 5 | Pandas II — groupby, merge, pivot, time series, EDA | 5 |
 | 07 | 7 | JSON — parsing, nested data, APIs | 4 |
 | 13 | 13 | Scikit-learn — preprocessing, pipelines, evaluation | 3 |
+| — | Sample | Textbook-based sections (broadcasting, GroupBy) — preview of the format for Weeks 3–5 | 2 |
 
 Weeks 6 (multiprocessing), 8–9 (web scraping) and 10–12 (Django) need a real terminal and network access, so
 they live in the [Codespaces repository](https://github.com/zmomani/pds-606315) instead.
@@ -56,6 +57,24 @@ assert solve(2) == 4, "message shown when this fails"
 ```
 :::
 ````
+
+A mini challenge is a question with a hidden answer; everything after the `---` line is shown only when the
+student presses *Show answer*:
+
+````markdown
+:::challenge title="Predict the result shape"
+The question (Markdown, may contain runnable examples).
+---
+The answer.
+:::
+````
+
+**Helper notes.** Words in lesson code that are listed in `lessons/glossary.json` get a dotted underline and show
+a short note on hover, keyboard focus or tap. A key that starts with `.` applies only to a method or attribute
+(`.sum` matches `scores.sum()` but not `sum(x)`). Edit that one file to change or add notes.
+
+**Figures** are SVG files in `figures/`, drawn by `figures/make_figures.py`, and are included with the usual
+`![alt text](figures/name.svg)`.
 
 Manifest fields: `packages` (Pyodide packages to load, e.g. `numpy`, `pandas`, `matplotlib`, `scikit-learn`),
 `data` (files from `data/` to mount), `exercises` (ids, for the progress counter).
